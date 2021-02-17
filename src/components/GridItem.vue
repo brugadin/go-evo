@@ -6,25 +6,25 @@
 import {
   defineComponent, PropType, toRefs, SetupContext,
 } from 'vue';
-import { ItemData } from '@/store/modules/models';
+import { Territory } from '@/store/modules/models';
 
 interface Props {
-  item: ItemData;
+  territoryItem: Territory;
 }
 
 export default defineComponent({
   name: 'GridItem',
   props: {
-    item: {
-      type: Object as PropType<ItemData>,
+    territoryItem: {
+      type: Object as PropType<Territory>,
       default: () => ({}),
     },
   },
   setup(props: Props, { emit }: SetupContext) {
-    const { item } = toRefs(props);
+    const { territoryItem } = toRefs(props);
 
     function itemClicked(): void {
-      emit('item-clicked', item.value);
+      emit('item-clicked', territoryItem.value);
     }
 
     return {

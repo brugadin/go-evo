@@ -1,6 +1,6 @@
 <template>
 <div class="grid" :style="gridTemplateColumnStyle">
-    <GridItem class="item" v-for="item in gridItems" :key="item.id" :item="item" />
+    <GridItem class="item" v-for="item in gridItems" :key="item.id" :territoryItem="item" />
 </div>
 </template>
 
