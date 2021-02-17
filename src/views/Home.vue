@@ -17,10 +17,6 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .game-map-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%)
+  max-width: 700px;
 }
 </style>

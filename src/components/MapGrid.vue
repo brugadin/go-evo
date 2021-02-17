@@ -1,38 +1,35 @@
 <template>
 <div class="grid" :style="gridTemplateColumnStyle">
-    <GridItem class="item" v-for="item in gridItems" :key="item.id" :territoryItem="item" />
+    <TerritoryItem class="item" v-for="item in gridItems" :key="item.id" :territoryItem="item" />
 </div>
 </template>
 
 <script lang='ts'>
+import { Territory } from '@/store/modules/models';
 import {
   computed, defineComponent, reactive, toRefs,
 } from 'vue';
 
-import GridItem from './GridItem.vue';
+import TerritoryItem from './TerritoryItem.vue';
 
 const defaultSize = 10;
 
-interface GridItem {
-  id: number;
-}
-
 interface ComponentState {
-  gridItems: GridItem[];
+  territoryItems: Territory[];
   gridTemplateColumnStyle: string;
 }
 
 export default defineComponent({
   components: {
-    GridItem,
+    TerritoryItem,
   },
   name: 'MapGrid',
   setup() {
     const state: ComponentState = reactive({
-      gridItems: computed(() => (new Array(defaultSize * defaultSize)
+      territoryItems: computed(() => (new Array(defaultSize * defaultSize)
         .fill(null)
-        .map((item: GridItem, index: number) => ({ id: (index + 1) })))),
-      gridTemplateColumnStyle: computed(() => `grid-template-columns: repeat(${defaultSize}, 1fr)`),
+        .map((item: Territory, index: number) => ({ id: (index + 1), owner: null })))),
+      gridTemplateColumnStyle: computed(() => `grid-template-columns: repeat(${defaultSize}, 1fr); width: ${defaultSize * 70}px`),
 
     });
     return {
@@ -46,16 +43,7 @@ export default defineComponent({
 
 .grid {
     display: grid;
-    align-items: stretch;
+    align-items: start;
     grid-gap: 5px;
-    width: 100%;
-    height: 100%;
-
-    .item::before {
-        content: "";
-        padding-bottom: 100%;
-        display: inline-block;
-        vertical-align: top;
-    }
 }
 </style>

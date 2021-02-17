@@ -1,5 +1,7 @@
 <template>
-    <div class="grid-item"> {{ item.id }} </div>
+<el-card class="grid-item">
+  {{ territoryItem.id }}
+</el-card>
 </template>
 
 <script lang='ts' >
@@ -13,7 +15,7 @@ interface Props {
 }
 
 export default defineComponent({
-  name: 'GridItem',
+  name: 'TerritoryItem',
   props: {
     territoryItem: {
       type: Object as PropType<Territory>,
@@ -36,8 +38,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .grid-item {
-    min-width: 30px;
-    min-height: 30px;
-    background-color: red;
+    width: 60px;
+    height: 60px;
+    // background-color: red;
+    cursor: pointer;
 }
 </style>
