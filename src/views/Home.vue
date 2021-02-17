@@ -1,20 +1,26 @@
 <template>
-  <div class="home">
-    <MapGrid />
+  <div class="game-map-container">
+    <MapGrid  />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import MapGrid from '@/components/MapGrid.vue'; // @ is an alias to /src
+import MapGrid from '@/components/MapGrid.vue';
 
 export default defineComponent({
   name: 'Home',
   components: {
     MapGrid,
   },
-  created() {
-    console.log('HEY THERE');
-  },
 });
 </script>
+<style lang="scss" scoped>
+.game-map-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%)
+}
+</style>

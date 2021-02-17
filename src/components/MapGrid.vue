@@ -1,6 +1,6 @@
 <template>
 <div class="grid" :style="gridTemplateColumnStyle">
-    <div v-for="item in gridItems" :key="item.id">{{item.id}}</div>
+    <GridItem class="item" v-for="item in gridItems" :key="item.id" :item="item" />
 </div>
 </template>
 
@@ -8,6 +8,8 @@
 import {
   computed, defineComponent, reactive, toRefs,
 } from 'vue';
+
+import GridItem from './GridItem.vue';
 
 const defaultSize = 10;
 
@@ -21,6 +23,9 @@ interface ComponentState {
 }
 
 export default defineComponent({
+  components: {
+    GridItem,
+  },
   name: 'MapGrid',
   setup() {
     const state: ComponentState = reactive({
@@ -46,17 +51,11 @@ export default defineComponent({
     width: 100%;
     height: 100%;
 
-    div::before {
+    .item::before {
         content: "";
         padding-bottom: 100%;
         display: inline-block;
         vertical-align: top;
-    }
-
-    div {
-        min-width: 30px;
-        min-height: 30px;
-        background-color: red;
     }
 }
 </style>
