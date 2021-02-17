@@ -1,6 +1,10 @@
 <template>
 <div class="grid" :style="gridTemplateColumnStyle">
-    <TerritoryItem class="item" v-for="item in gridItems" :key="item.id" :territoryItem="item" />
+    <TerritoryItem
+      class="item"
+      v-for="item in territoryItems"
+      :key="item.id"
+      :territoryItem="item" />
 </div>
 </template>
 
