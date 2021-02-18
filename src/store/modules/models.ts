@@ -3,7 +3,7 @@ export type PlayerColor = 'black' | 'white';
 export interface Player {
     name: string;
     score: number;
-    color: PlayerColor | null;
+    color: PlayerColor;
 }
 
 export interface Territory {
