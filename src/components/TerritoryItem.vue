@@ -1,5 +1,5 @@
 <template>
-<el-card class="grid-item">
+<el-card class="grid-item" shadow="hover">
   {{ territoryItem.id }}
 </el-card>
 </template>
@@ -37,10 +37,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '@/element-variables.scss';
 .grid-item {
     width: 60px;
     height: 60px;
-    // background-color: red;
     cursor: pointer;
+    font-size: $--font-size;
 }
 </style>

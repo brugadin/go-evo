@@ -34,6 +34,6 @@ export default {
     board: (state: GameState) => state.board,
     territoryItems: (state: GameState) => state.board?.cellData?.flat(1),
     players: (state: GameState) => state.players,
-    currentPlayer: (state: GameState) => state.currentPlayer,
+    currentPlayerName: (state: GameState) => state.currentPlayer?.name,
   },
 };

@@ -5,7 +5,9 @@ For example, to overwrite the theme color:
 */
 $--color-primary: hotpink;
 
+
 /* icon font path, required */
 $--font-path: '~element-plus/lib/theme-chalk/fonts';
+$--font-size: 14px;
 
 @import "~element-plus/packages/theme-chalk/src/index";

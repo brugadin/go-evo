@@ -11,12 +11,9 @@
 <script lang='ts'>
 import { Territory } from '@/store/modules/models';
 import {
-  computed, defineComponent, onMounted, PropType, reactive, toRefs,
+  computed, defineComponent, PropType, reactive, toRefs,
 } from 'vue';
-
 import TerritoryItem from './TerritoryItem.vue';
-
-const defaultSize = 10;
 
 interface ComponentState {
   gridTemplateColumnStyle: string;
@@ -39,11 +36,16 @@ export default defineComponent({
   },
   setup(props: Props) {
     const { territoryItems } = toRefs(props);
-    const state: ComponentState = reactive({
-      gridTemplateColumnStyle: computed(() => `grid-template-columns: repeat(${defaultSize}, 1fr); width: ${defaultSize * 70}px`),
 
+    function getColumnStyle(): string {
+      const columns = Math.sqrt(territoryItems.value.length);
+      return `grid-template-columns: repeat(${columns}, 1fr); width: ${columns * 70}px`;
+    }
+
+    const state: ComponentState = reactive({
+      gridTemplateColumnStyle: computed(() => getColumnStyle()),
     });
-    onMounted(() => console.log(territoryItems.value));
+
     return {
       ...toRefs(state),
     };
