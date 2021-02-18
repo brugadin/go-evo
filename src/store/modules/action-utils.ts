@@ -12,5 +12,5 @@ export const generateBasicBoard = (horizontalSize = 10): Board => ({
 
 export const generatePlayers = (): Player[] => Array.from(
   Array(numberOfPlayers),
-  (rowItem, playerNumber) => ({ name: `Player ${playerNumber + 1}`, score: 0, color: playerNumber === 0 ? 'black' : 'white' }),
+  (rowItem, playerNumber) => ({ name: `Player ${playerNumber + 1}`, score: 0, color: playerNumber === 0 ? 'black' : 'red' }),
 );

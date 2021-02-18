@@ -1,4 +1,4 @@
-export type PlayerColor = 'black' | 'white';
+export type PlayerColor = 'black' | 'red';
 
 export interface Player {
     name: string;

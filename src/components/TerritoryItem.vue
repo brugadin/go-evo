@@ -1,17 +1,25 @@
 <template>
-<el-card class="grid-item" shadow="hover">
-  {{ territoryItem.id }}
+<el-card
+@click="itemClicked"
+:shadow="shadowType"
+:body-style="backgroundColorStyle"
+  class="grid-item" >
 </el-card>
 </template>
 
 <script lang='ts' >
 import {
-  defineComponent, PropType, toRefs, SetupContext,
+  defineComponent, PropType, toRefs, SetupContext, reactive, computed,
 } from 'vue';
 import { Territory } from '@/store/modules/models';
 
 interface Props {
   territoryItem: Territory;
+}
+
+interface ComponentState {
+  shadowType: string;
+  backgroundColorStyle: string | null;
 }
 
 export default defineComponent({
@@ -29,7 +37,24 @@ export default defineComponent({
       emit('item-clicked', territoryItem.value);
     }
 
+    function getBackgroundColorStyle(colorString: string | null) {
+      let colorStyle = null;
+      if (colorString) {
+        colorStyle = `background-color: ${colorString}`;
+      }
+      return colorStyle;
+    }
+
+    const state: ComponentState = reactive({
+      shadowType: computed(() => (territoryItem.value.owner === null ? 'hover' : 'always')),
+      backgroundColorStyle: computed(() => {
+        const { owner } = territoryItem.value;
+        return getBackgroundColorStyle(owner?.color || null);
+      }),
+    });
+
     return {
+      ...toRefs(state),
       itemClicked,
     };
   },

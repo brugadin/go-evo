@@ -1,8 +1,11 @@
 <template>
   <el-card>
-  <div v-for="player in players" :key="player.name" class="text">
+  <div v-for="player in players" :key="player.name"
+  :style="'color: ' + player.color "
+  class="text">
     {{ player.name }}
-    <i v-if="player.name === currentPlayerName" class="el-icon-user"></i>
+    <i v-if="player.name === currentPlayerName"
+    class="el-icon-user"></i>
   </div>
 </el-card>
 </template>
@@ -10,6 +13,15 @@
 <script lang='ts'>
 import { Player } from '@/store/modules/models';
 import { defineComponent, PropType } from 'vue';
+
+interface ComponentState {
+  iconColorStyle: string;
+}
+
+interface Props {
+  player: Player;
+  currentPlayerName: string;
+}
 
 export default defineComponent({
   name: 'Players',

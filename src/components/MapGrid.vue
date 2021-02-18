@@ -4,14 +4,15 @@
       class="item"
       v-for="item in territoryItems"
       :key="item.id"
-      :territoryItem="item" />
+      :territoryItem="item"
+      @itemClicked="itemClicked" />
 </div>
 </template>
 
 <script lang='ts'>
 import { Territory } from '@/store/modules/models';
 import {
-  computed, defineComponent, PropType, reactive, toRefs,
+  computed, defineComponent, PropType, reactive, SetupContext, toRefs,
 } from 'vue';
 import TerritoryItem from './TerritoryItem.vue';
 
@@ -34,7 +35,7 @@ export default defineComponent({
       default: () => ([]),
     },
   },
-  setup(props: Props) {
+  setup(props: Props, { emit }: SetupContext) {
     const { territoryItems } = toRefs(props);
 
     function getColumnStyle(): string {
@@ -46,8 +47,13 @@ export default defineComponent({
       gridTemplateColumnStyle: computed(() => getColumnStyle()),
     });
 
+    function itemClicked(territory: Territory): void {
+      emit('territory-clicked', territory);
+    }
+
     return {
       ...toRefs(state),
+      itemClicked,
     };
   },
 });

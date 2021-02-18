@@ -5,6 +5,10 @@ function startGame(): void {
   store.dispatch('game/startGame');
 }
 
+function claimTerritory(territory: Territory): void {
+  store.dispatch('game/claimTerritory', territory);
+}
+
 function getPlayers(): Player[] {
   return store.getters['game/players'];
 }
@@ -19,6 +23,7 @@ function getTerritories(): Territory[] {
 
 export default function useGame() {
   return {
+    claimTerritory,
     startGame,
     getTerritories,
     getPlayers,

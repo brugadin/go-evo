@@ -6,7 +6,7 @@
       <el-container>
         <el-main class="main-content">
           <div class="game-map-container">
-            <MapGrid :territoryItems="territoryItems"  />
+            <MapGrid :territoryItems="territoryItems" @territoryClicked="territoryClicked"  />
         </div>
         </el-main>
       </el-container>
@@ -38,6 +38,7 @@ export default defineComponent({
   setup() {
     const {
       startGame,
+      claimTerritory,
       getTerritories,
       getPlayers,
       getCurrentPlayerName,
@@ -49,10 +50,15 @@ export default defineComponent({
       currentPlayerName: computed(() => getCurrentPlayerName()),
     });
 
+    function territoryClicked(territory: Territory): void {
+      claimTerritory(territory);
+    }
+
     onMounted(() => startGame());
 
     return {
       ...toRefs(state),
+      territoryClicked,
     };
   },
 });
