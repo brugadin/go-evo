@@ -14,15 +14,6 @@
 import { Player } from '@/store/modules/models';
 import { defineComponent, PropType } from 'vue';
 
-interface ComponentState {
-  iconColorStyle: string;
-}
-
-interface Props {
-  player: Player;
-  currentPlayerName: string;
-}
-
 export default defineComponent({
   name: 'Players',
   props: {
