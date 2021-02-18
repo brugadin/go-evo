@@ -38,6 +38,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '@/element-variables.scss';
+
 .grid-item {
     width: 60px;
     height: 60px;
