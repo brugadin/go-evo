@@ -6,7 +6,9 @@ export const generateBasicBoard = (horizontalSize = 10): Board => ({
   cellData: Array.from(
     Array(horizontalSize),
     (rowItem, rowNumber) => Array.from(Array(horizontalSize),
-      (columnItem, columnNumber) => ({ id: (rowNumber * 10) + columnNumber, owner: null })),
+      (columnItem, columnNumber) => ({
+        id: (rowNumber * 10) + columnNumber, column: columnNumber, row: rowNumber,
+      })),
   ),
 });
 

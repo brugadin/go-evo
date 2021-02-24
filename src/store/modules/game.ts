@@ -4,6 +4,7 @@ import {
   Board, GameState, Player, Territory,
 } from './models';
 import * as fromMutationTypes from './mutation-types';
+import * as getCapturedTerritories from './mutation-utils';
 
 interface StartGamePayload { board: Board; players: Player[]}
 
@@ -25,10 +26,13 @@ export default {
     [fromMutationTypes.CLAIM_TERRITORY](state: GameState, territory: Territory): void {
       const foundItem = state.board?.cellData
       .flat(1)
-      .find((item) => item?.id === territory?.id && item.owner === null);
+      .find((item) => item?.id === territory?.id && !item.owner);
 
-      if (foundItem) {
+      if (foundItem && state.board) {
+        const adjacentTerritories = getCapturedTerritories.default(territory, state.board);
         foundItem.owner = state.currentPlayer;
+        // Testing adjacent territory detection
+        console.log(adjacentTerritories);
         const playerIndex = state.players
           .findIndex((player: Player) => (state.currentPlayer?.name === player.name));
         const nextPlayer = state.players[playerIndex + 1] || state.players[0];

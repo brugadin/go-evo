@@ -8,7 +8,16 @@ export interface Player {
 
 export interface Territory {
     id: number;
-    owner: Player | null;
+    row: number;
+    column: number;
+    owner?: Player;
+}
+
+export interface AdjacentTerritories {
+    top?: Territory;
+    right?: Territory;
+    bottom?: Territory;
+    left?: Territory;
 }
 
 export interface Board {
@@ -17,6 +26,6 @@ export interface Board {
 
 export interface GameState {
     players: Player[];
-    currentPlayer: Player | null;
-    board: Board | null;
+    currentPlayer?: Player;
+    board?: Board;
   }
