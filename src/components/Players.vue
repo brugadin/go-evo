@@ -11,7 +11,7 @@
 </template>
 
 <script lang='ts'>
-import { Player } from '@/store/modules/models';
+import { Player } from '@/core/models';
 import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({

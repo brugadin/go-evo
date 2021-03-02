@@ -10,7 +10,7 @@
 </template>
 
 <script lang='ts'>
-import { Territory } from '@/store/modules/models';
+import { Territory } from '@/core/models';
 import {
   computed, defineComponent, PropType, reactive, SetupContext, toRefs,
 } from 'vue';

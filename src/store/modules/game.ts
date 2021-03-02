@@ -1,8 +1,8 @@
+import { Board } from '@/core/board';
+import { Player, Territory } from '@/core/models';
 import { ActionContext } from 'vuex';
 import * as fromActionUtils from './action-utils';
-import {
-  Board, GameState, Player, Territory,
-} from './models';
+import { GameState } from './models';
 import * as fromMutationTypes from './mutation-types';
 import * as getCapturedTerritories from './mutation-utils';
 
@@ -25,7 +25,6 @@ export default {
     },
     [fromMutationTypes.CLAIM_TERRITORY](state: GameState, territory: Territory): void {
       const foundItem = state.board?.cellData
-      .flat(1)
       .find((item) => item?.id === territory?.id && !item.owner);
 
       if (foundItem && state.board) {
@@ -42,8 +41,8 @@ export default {
   },
   actions: {
     startGame({ commit }: ActionContext<GameState, {}>): void {
-      const newBoard = fromActionUtils.generateBasicBoard();
       const newPlayers = fromActionUtils.generatePlayers();
+      const newBoard = new Board(newPlayers);
       const payload: StartGamePayload = { board: newBoard, players: newPlayers };
       commit(fromMutationTypes.STAR_GAME, payload);
     },
@@ -53,7 +52,7 @@ export default {
   },
   getters: {
     board: (state: GameState) => state.board,
-    territoryItems: (state: GameState) => state.board?.cellData?.flat(1),
+    territoryItems: (state: GameState) => state.board?.cellData,
     players: (state: GameState) => state.players,
     currentPlayerName: (state: GameState) => state.currentPlayer?.name,
   },

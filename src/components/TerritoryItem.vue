@@ -8,10 +8,10 @@
 </template>
 
 <script lang='ts' >
+import { Territory } from '@/core/models';
 import {
-  defineComponent, PropType, toRefs, SetupContext, reactive, computed,
+  computed, defineComponent, PropType, reactive, SetupContext, toRefs,
 } from 'vue';
-import { Territory } from '@/store/modules/models';
 
 interface Props {
   territoryItem: Territory;

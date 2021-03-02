@@ -1,10 +1,11 @@
-import { AdjacentTerritories, Board, Territory } from './models';
+import { Board } from '@/core/board';
+import { AdjacentTerritories, Territory } from '@/core/models';
 
 const getTerritoryByCoordinates = (
   row: number,
   column: number,
   board: Board,
-): Territory | undefined => board.cellData.flat(1).find(
+): Territory | undefined => board.cellData.find(
   (territory: Territory) => territory.column === column && territory.row === row,
 );
 

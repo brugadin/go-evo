@@ -1,5 +1,5 @@
+import { Player, Territory } from '@/core/models';
 import store from '@/store';
-import { Player, Territory } from '../store/modules/models';
 
 function startGame(): void {
   store.dispatch('game/startGame');
