@@ -39,6 +39,7 @@ const getGroup = (
   territory: Territory,
   territories: Territory[],
   claimedTerritory?: Territory,
+  currentPlayer?: Player,
 ): { liberties: number; territories: Territory[]} => {
   const visited: Territory[] = [];
   const visitedList: Territory[] = [];
@@ -56,11 +57,12 @@ const getGroup = (
 
     const neighbors = getAdjacentTerritoriesList(currentTerritory, territories);
 
-    count = +neighbors.filter((neighbor: Territory) => !neighbor.owner
+    count += neighbors.filter((neighbor: Territory) => !neighbor.owner
     && claimedTerritory?.id !== neighbor.id).length;
 
     neighbors.forEach((neighbor: Territory) => {
-      if (neighbor.owner === owner) { queue.push(neighbor); }
+      if (neighbor.owner === owner
+        || (currentPlayer && currentPlayer === neighbor.owner)) { queue.push(neighbor); }
     });
 
     visited.push(currentTerritory);
@@ -91,8 +93,6 @@ function getCapturedTerritories(
     const neighborOwner = neighborTerritory.owner;
     if (!!neighborOwner && neighborOwner !== currentPlayer) {
       const groupedItems = getGroup(neighborTerritory, territories, territory);
-      console.log('groupedItems');
-      console.log(groupedItems);
 
       if (groupedItems.liberties === 0) {
         capturedTerritories = capturedTerritories.concat(groupedItems.territories);
@@ -105,9 +105,10 @@ function getCapturedTerritories(
 const isSuicidalMove = (
   territory: Territory,
   territories: Territory[],
+  currentPlayer: Player,
   capturedTerritories: Territory[],
 ): boolean => (capturedTerritories.length === 0
-    && getGroup(territory, territories, territory).liberties === 0);
+    && getGroup(territory, territories, territory, currentPlayer).liberties === 0);
 
 export default {
   isSuicidalMove,
