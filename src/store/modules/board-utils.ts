@@ -1,4 +1,7 @@
-import { AdjacentTerritories, Player, Territory } from '@/core/models';
+import {
+  AdjacentTerritories, Player, Territory,
+} from '@/core/models';
+
 import { GameState } from './models';
 
 const getTerritoryByCoordinates = (
@@ -28,69 +31,90 @@ export const getAdjacentTerritories = (
   right: getTerritoryByCoordinates(territory.row, territory.column + 1, territories),
 } as AdjacentTerritories);
 
+const getAdjacentTerritoriesList = (
+  territory: Territory,
+  territories: Territory[],
+) => Object.values(getAdjacentTerritories(territory, territories))
+  .filter((filterTerritory: Territory | undefined) => !!filterTerritory) as Territory[];
+
+export const getGroup = (
+  territory: Territory,
+  territories: Territory[],
+): { liberties: number; territories: Territory[]} => {
+  const visited: Territory[] = [];
+  const visitedList: Territory[] = [];
+  const queue: Territory[] = [territory];
+  let count = 0;
+  const { owner } = territory;
+
+  while (queue.length > 0 && owner) {
+    // eslint-disable-next-line
+    const currentTerritory = queue.pop()!;
+    const hasVisited = visited.find(
+      (visitedTerritory) => visitedTerritory.id === currentTerritory?.id,
+    );
+      // eslint-disable-next-line
+      if (hasVisited) { continue; }
+
+    const neighbors = getAdjacentTerritoriesList(currentTerritory, territories);
+
+    count = neighbors.filter((neighbor: Territory) => !neighbor.owner).length;
+    neighbors.forEach((neighbor: Territory) => {
+      if (neighbor.owner === owner) { queue.push(neighbor); }
+    });
+
+    visited.push(currentTerritory);
+    visitedList.push(currentTerritory);
+  }
+
+  return {
+    liberties: count,
+    territories: visitedList,
+  };
+};
+
+function changePlayer(state: GameState) {
+  const playerIndex = state.players
+    .findIndex((player: Player) => (state.currentPlayer?.name === player.name));
+  const nextPlayer = state.players[playerIndex + 1] || state.players[0];
+  state.currentPlayer = nextPlayer;
+}
+
+function getCapturedTerritories(territory: Territory, territories: Territory[]) {
+  const neighbors = getAdjacentTerritoriesList(territory, territories);
+  let capturedTerritories: Territory[] = [];
+
+  neighbors.forEach((neighborTerritory: Territory) => {
+    const neighborOwner = neighborTerritory.owner;
+    if (!!neighborOwner && neighborOwner !== territory.owner) {
+      const groupedItems = getGroup(neighborTerritory, territories);
+
+      if (groupedItems.liberties === 0) {
+        capturedTerritories = capturedTerritories.concat(groupedItems.territories);
+      }
+    }
+  });
+  return capturedTerritories;
+}
+
 export const claimTerritory = (state: GameState, territory: Territory) => {
   const foundItem = state.territories
     .find((item) => item?.id === territory?.id && !item.owner);
 
   if (!foundItem) { return; }
-  const adjacentTerritories = getAdjacentTerritories(territory, state.territories);
+
   foundItem.owner = state.currentPlayer;
-  const playerIndex = state.players
-    .findIndex((player: Player) => (state.currentPlayer?.name === player.name));
-  const nextPlayer = state.players[playerIndex + 1] || state.players[0];
-  state.currentPlayer = nextPlayer;
-};
+  const capturedTerritories: Territory[] = getCapturedTerritories(foundItem, state.territories);
 
-export const getGroup = (territory: Territory, territories: Territory[]) => {
-  if (!territory.owner) { return; }
-  const visited: Territory[] = [];
-  const queue: Territory[] = [territory];
-  const count = 0;
-
-  while (queue.length > 0) {
-    const currentTerritory = queue.pop()!;
-    const hasVisited = visited.find(
-      (visitedTerritory) => visitedTerritory.id === currentTerritory?.id,
-    );
-    // eslint-disable-next-line
-    if (hasVisited) { continue; }
-
-    const neighbors = getAdjacentTerritories(currentTerritory, territories);
+  if (capturedTerritories.length === 0
+    && getGroup(territory, state.territories).liberties === 0) {
+    foundItem.owner = undefined;
+    return;
   }
+
+  for (let i = 0; i < capturedTerritories.length; i += 1) {
+    capturedTerritories[i].owner = undefined;
+  }
+
+  changePlayer(state);
 };
-
-// Board.prototype.get_group = function(i, j) {
-
-//   var color = this.board[i][j];
-//   if (color == Board.EMPTY)
-//       return null;
-
-//   var visited = {}; // for O(1) lookups
-//   var visited_list = []; // for returning
-//   var queue = [[i, j]];
-//   var count = 0;
-
-//   while (queue.length > 0) {
-//       var stone = queue.pop();
-//       if (visited[stone])
-//           continue;
-
-//       var neighbors = this.get_adjacent_intersections(stone[0], stone[1]);
-//       var self = this;
-//       _.each(neighbors, function(n) {
-//           var state = self.board[n[0]][n[1]];
-//           if (state == Board.EMPTY)
-//               count++;
-//           if (state == color)
-//               queue.push([n[0], n[1]]);
-//       });
-
-//       visited[stone] = true;
-//       visited_list.push(stone);
-//   }
-
-//   return {
-//       "liberties": count,
-//       "stones": visited_list
-//   };
-// }
