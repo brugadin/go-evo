@@ -1,9 +1,9 @@
 import { Player, Territory } from '@/core/models';
 import { ActionContext } from 'vuex';
-import * as fromActionUtils from './action-utils';
 import * as fromBoardUtils from './board-utils';
 import { GameState } from './models';
 import * as fromMutationTypes from './mutation-types';
+import * as fromPlayerUtils from './player-utils';
 
 interface StartGamePayload { territories: Territory[]; players: Player[]}
 
@@ -28,7 +28,7 @@ export default {
   },
   actions: {
     startGame({ commit }: ActionContext<GameState, {}>): void {
-      const players = fromActionUtils.generatePlayers();
+      const players = fromPlayerUtils.generatePlayers();
       const territories = fromBoardUtils.generateTerritories();
       const payload: StartGamePayload = { territories, players };
       commit(fromMutationTypes.STAR_GAME, payload);
