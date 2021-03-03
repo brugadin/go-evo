@@ -19,3 +19,8 @@ export interface AdjacentTerritories {
     bottom?: Territory;
     left?: Territory;
 }
+
+export interface TerritoryGroup {
+    liberties: number;
+    territories: Territory[];
+  }

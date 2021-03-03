@@ -2,8 +2,6 @@ import {
   AdjacentTerritories, Player, Territory,
 } from '@/core/models';
 
-import { GameState } from './models';
-
 const getTerritoryByCoordinates = (
   row: number,
   column: number,
@@ -12,7 +10,7 @@ const getTerritoryByCoordinates = (
   (territory: Territory) => territory.column === column && territory.row === row,
 );
 
-export const generateTerritories = (boardSize = 10): Territory[] => Array.from(
+const generateTerritories = (boardSize = 10): Territory[] => Array.from(
   Array(boardSize),
   (rowItem, rowNumber) => Array.from(Array(boardSize),
     (columnItem, columnNumber) => ({
@@ -21,7 +19,7 @@ export const generateTerritories = (boardSize = 10): Territory[] => Array.from(
 )
   .flat(1);
 
-export const getAdjacentTerritories = (
+const getAdjacentTerritories = (
   territory: Territory,
   territories: Territory[],
 ): AdjacentTerritories => ({
@@ -34,20 +32,20 @@ export const getAdjacentTerritories = (
 const getAdjacentTerritoriesList = (
   territory: Territory,
   territories: Territory[],
-) => Object.values(getAdjacentTerritories(territory, territories))
+): Territory[] => Object.values(getAdjacentTerritories(territory, territories))
   .filter((filterTerritory: Territory | undefined) => !!filterTerritory) as Territory[];
 
-export const getGroup = (
+const getGroup = (
   territory: Territory,
   territories: Territory[],
+  currentPlayer?: Player,
 ): { liberties: number; territories: Territory[]} => {
   const visited: Territory[] = [];
   const visitedList: Territory[] = [];
   const queue: Territory[] = [territory];
   let count = 0;
-  const { owner } = territory;
-
-  while (queue.length > 0 && owner) {
+  const owner = currentPlayer || territory.owner;
+  while (queue.length > 0) {
     // eslint-disable-next-line
     const currentTerritory = queue.pop()!;
     const hasVisited = visited.find(
@@ -58,7 +56,7 @@ export const getGroup = (
 
     const neighbors = getAdjacentTerritoriesList(currentTerritory, territories);
 
-    count = neighbors.filter((neighbor: Territory) => !neighbor.owner).length;
+    count = +neighbors.filter((neighbor: Territory) => !neighbor.owner).length;
     neighbors.forEach((neighbor: Territory) => {
       if (neighbor.owner === owner) { queue.push(neighbor); }
     });
@@ -73,21 +71,26 @@ export const getGroup = (
   };
 };
 
-function changePlayer(state: GameState) {
-  const playerIndex = state.players
-    .findIndex((player: Player) => (state.currentPlayer?.name === player.name));
-  const nextPlayer = state.players[playerIndex + 1] || state.players[0];
-  state.currentPlayer = nextPlayer;
+function getNextPlayer(currentPlayerName: string, players: Player[]): Player {
+  const playerIndex = players
+    .findIndex((player: Player) => (currentPlayerName === player.name));
+  return players[playerIndex + 1] || players[0];
 }
 
-function getCapturedTerritories(territory: Territory, territories: Territory[]) {
+function getCapturedTerritories(
+  territory: Territory,
+  territories: Territory[],
+  currentPlayer: Player,
+): Territory[] {
   const neighbors = getAdjacentTerritoriesList(territory, territories);
   let capturedTerritories: Territory[] = [];
 
   neighbors.forEach((neighborTerritory: Territory) => {
     const neighborOwner = neighborTerritory.owner;
-    if (!!neighborOwner && neighborOwner !== territory.owner) {
+    if (!!neighborOwner && neighborOwner !== currentPlayer) {
       const groupedItems = getGroup(neighborTerritory, territories);
+      console.log('groupedItems');
+      console.log(groupedItems);
 
       if (groupedItems.liberties === 0) {
         capturedTerritories = capturedTerritories.concat(groupedItems.territories);
@@ -97,24 +100,17 @@ function getCapturedTerritories(territory: Territory, territories: Territory[]) 
   return capturedTerritories;
 }
 
-export const claimTerritory = (state: GameState, territory: Territory) => {
-  const foundItem = state.territories
-    .find((item) => item?.id === territory?.id && !item.owner);
+const isSuicidalMove = (
+  territory: Territory,
+  territories: Territory[],
+  currentPlayer: Player,
+  capturedTerritories: Territory[],
+): boolean => (capturedTerritories.length === 0
+    && getGroup(territory, territories, currentPlayer).liberties === 0);
 
-  if (!foundItem) { return; }
-
-  foundItem.owner = state.currentPlayer;
-  const capturedTerritories: Territory[] = getCapturedTerritories(foundItem, state.territories);
-
-  if (capturedTerritories.length === 0
-    && getGroup(territory, state.territories).liberties === 0) {
-    foundItem.owner = undefined;
-    return;
-  }
-
-  for (let i = 0; i < capturedTerritories.length; i += 1) {
-    capturedTerritories[i].owner = undefined;
-  }
-
-  changePlayer(state);
+export default {
+  isSuicidalMove,
+  getCapturedTerritories,
+  getNextPlayer,
+  generateTerritories,
 };

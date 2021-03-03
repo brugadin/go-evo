@@ -5,8 +5,8 @@ function startGame(): void {
   store.dispatch('game/startGame');
 }
 
-function claimTerritory(territory: Territory): void {
-  store.dispatch('game/claimTerritory', territory);
+function claimTerritory(territoryId: number): void {
+  store.dispatch('game/claimTerritory', territoryId);
 }
 
 function getPlayers(): Player[] {

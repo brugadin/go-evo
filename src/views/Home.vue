@@ -51,7 +51,7 @@ export default defineComponent({
     });
 
     function territoryClicked(territory: Territory): void {
-      claimTerritory(territory);
+      claimTerritory(territory.id);
     }
 
     onMounted(() => startGame());
