@@ -52,12 +52,10 @@ export default {
         territories,
         currentPlayer,
       );
-      console.log(capturedTerritories);
 
       const isSuicidalMove = BoardUtils.isSuicidalMove(
         territory,
         territories,
-        currentPlayer,
         capturedTerritories,
       );
 
