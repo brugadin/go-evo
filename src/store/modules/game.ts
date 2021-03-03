@@ -1,12 +1,11 @@
-import { Board } from '@/core/board';
 import { Player, Territory } from '@/core/models';
 import { ActionContext } from 'vuex';
 import * as fromActionUtils from './action-utils';
+import * as fromBoardUtils from './board-utils';
 import { GameState } from './models';
 import * as fromMutationTypes from './mutation-types';
-import * as getCapturedTerritories from './mutation-utils';
 
-interface StartGamePayload { board: Board; players: Player[]}
+interface StartGamePayload { territories: Territory[]; players: Player[]}
 
 export default {
   strict: true,
@@ -18,32 +17,20 @@ export default {
   },
   mutations: {
     [fromMutationTypes.STAR_GAME](state: GameState, payload: StartGamePayload): void {
-      state.board = payload.board;
+      state.territories = payload.territories;
       state.players = payload.players;
       const [player1] = state.players;
       state.currentPlayer = player1;
     },
     [fromMutationTypes.CLAIM_TERRITORY](state: GameState, territory: Territory): void {
-      const foundItem = state.board?.cellData
-      .find((item) => item?.id === territory?.id && !item.owner);
-
-      if (foundItem && state.board) {
-        const adjacentTerritories = getCapturedTerritories.default(territory, state.board);
-        foundItem.owner = state.currentPlayer;
-        // Testing adjacent territory detection
-        console.log(adjacentTerritories);
-        const playerIndex = state.players
-          .findIndex((player: Player) => (state.currentPlayer?.name === player.name));
-        const nextPlayer = state.players[playerIndex + 1] || state.players[0];
-        state.currentPlayer = nextPlayer;
-      }
+      fromBoardUtils.claimTerritory(state, territory);
     },
   },
   actions: {
     startGame({ commit }: ActionContext<GameState, {}>): void {
-      const newPlayers = fromActionUtils.generatePlayers();
-      const newBoard = new Board(newPlayers);
-      const payload: StartGamePayload = { board: newBoard, players: newPlayers };
+      const players = fromActionUtils.generatePlayers();
+      const territories = fromBoardUtils.generateTerritories();
+      const payload: StartGamePayload = { territories, players };
       commit(fromMutationTypes.STAR_GAME, payload);
     },
     claimTerritory({ commit }: ActionContext<GameState, {}>, territory: Territory): void {
@@ -51,8 +38,7 @@ export default {
     },
   },
   getters: {
-    board: (state: GameState) => state.board,
-    territoryItems: (state: GameState) => state.board?.cellData,
+    territoryItems: (state: GameState) => state.territories,
     players: (state: GameState) => state.players,
     currentPlayerName: (state: GameState) => state.currentPlayer?.name,
   },
