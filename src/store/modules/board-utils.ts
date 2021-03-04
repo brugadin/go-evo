@@ -46,7 +46,10 @@ const getGroup = (
   const queue: Territory[] = [territory];
   let count = 0;
   const { owner } = territory;
+  let whileCount = 0;
   while (queue.length > 0) {
+    whileCount += 1;
+
     // eslint-disable-next-line
     const currentTerritory = queue.pop()!;
     const hasVisited = visited.find(
@@ -68,6 +71,7 @@ const getGroup = (
     visited.push(currentTerritory);
     visitedList.push(currentTerritory);
   }
+  console.log('whileCount', whileCount);
 
   return {
     liberties: count,
