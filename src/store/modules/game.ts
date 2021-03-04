@@ -41,8 +41,13 @@ export default {
       commit(fromMutationTypes.STAR_GAME, payload);
     },
     claimTerritory({ commit, state }: ActionContext<GameState, {}>, territoryId: number): void {
-      const { currentPlayer, territories } = { ...state };
-      const territory = state.territories
+      const {
+        currentPlayer,
+        territories,
+        players,
+      } = JSON.parse(JSON.stringify(state)) as GameState;
+
+      const territory = territories
         .find((item) => item?.id === territoryId && !item.owner) as Territory;
 
       if (!currentPlayer || !territory) { return; }
@@ -52,7 +57,6 @@ export default {
       const capturedTerritories: Territory[] = BoardUtils.getCapturedTerritories(
         territory,
         territories,
-        currentPlayer,
       );
 
       const isSuicidalMove = BoardUtils.isSuicidalMove(
@@ -60,10 +64,10 @@ export default {
         territories,
         capturedTerritories,
       );
-
+      // console.log('isSuicidalMove', isSuicidalMove);
       if (isSuicidalMove) { return; }
-
-      const nextPlayer = BoardUtils.getNextPlayer(currentPlayer.name, state.players);
+      // console.log('after suicidal check', isSuicidalMove);
+      const nextPlayer = BoardUtils.getNextPlayer(currentPlayer.name, players);
 
       const capturedTerritoriesIds = capturedTerritories.map(
         (capturedTerritory: Territory) => capturedTerritory.id,

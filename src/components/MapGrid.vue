@@ -40,7 +40,7 @@ export default defineComponent({
 
     function getColumnStyle(): string {
       const columns = Math.sqrt(territoryItems.value.length);
-      return `grid-template-columns: repeat(${columns}, 1fr); width: ${columns * 70}px`;
+      return `grid-template-columns: repeat(${columns}, 1fr); width: ${columns * 30}px`;
     }
 
     const state: ComponentState = reactive({

@@ -1,6 +1,7 @@
 export type PlayerColor = 'black' | 'red';
 
 export interface Player {
+    id: number;
     name: string;
     score: number;
     color: PlayerColor;

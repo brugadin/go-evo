@@ -46,7 +46,7 @@ export default defineComponent({
     }
 
     const state: ComponentState = reactive({
-      shadowType: computed(() => (territoryItem.value.owner === null ? 'hover' : 'always')),
+      shadowType: computed(() => (!territoryItem.value.owner ? 'hover' : 'always')),
       backgroundColorStyle: computed(() => {
         const { owner } = territoryItem.value;
         return getBackgroundColorStyle(owner?.color || null);
@@ -65,9 +65,13 @@ export default defineComponent({
 @import '@/element-variables.scss';
 
 .grid-item {
-    width: 60px;
-    height: 60px;
-    cursor: pointer;
-    font-size: $--font-size;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: $--font-size;
+}
+
+::v-deep .el-card__body {
+  padding: 14px;
 }
 </style>

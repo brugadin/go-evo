@@ -10,7 +10,7 @@ const getTerritoryByCoordinates = (
   (territory: Territory) => territory.column === column && territory.row === row,
 );
 
-const generateTerritories = (boardSize = 10): Territory[] => Array.from(
+const generateTerritories = (boardSize = 19): Territory[] => Array.from(
   Array(boardSize),
   (rowItem, rowNumber) => Array.from(Array(boardSize),
     (columnItem, columnNumber) => ({
@@ -35,47 +35,35 @@ const getAdjacentTerritoriesList = (
 ): Territory[] => Object.values(getAdjacentTerritories(territory, territories))
   .filter((filterTerritory: Territory | undefined) => !!filterTerritory) as Territory[];
 
-const getGroup = (
+export const getGroup = (
   territory: Territory,
   territories: Territory[],
-  claimedTerritory?: Territory,
-  currentPlayer?: Player,
 ): { liberties: number; territories: Territory[]} => {
   const visited: Territory[] = [];
   const visitedList: Territory[] = [];
   const queue: Territory[] = [territory];
   let count = 0;
-  const { owner } = territory;
-  let whileCount = 0;
-  while (queue.length > 0) {
-    whileCount += 1;
+  const ownerId = territory.owner?.id;
 
+  while (queue.length > 0) {
     // eslint-disable-next-line
-    const currentTerritory = queue.pop()!;
+      const currentTerritory = queue.pop()!;
     const hasVisited = visited.find(
       (visitedTerritory) => visitedTerritory.id === currentTerritory?.id,
     );
-      // eslint-disable-next-line
-      if (hasVisited) { continue; }
+    // eslint-disable-next-line
+        if (hasVisited) { continue; }
 
     const neighbors = getAdjacentTerritoriesList(currentTerritory, territories);
 
-    count += neighbors.filter((neighbor: Territory) => !neighbor.owner
-    && claimedTerritory?.id !== neighbor.id).length;
-
+    count = neighbors.filter((neighbor: Territory) => !neighbor.owner).length;
     neighbors.forEach((neighbor: Territory) => {
-      if (!!neighbor.owner && neighbor.owner === owner
-        && (currentPlayer && currentPlayer === neighbor.owner)) {
-        console.log('neighbor.owner', neighbor.owner);
-        console.log('owner', owner);
-        queue.push(neighbor);
-      }
+      if (neighbor.owner?.id === ownerId) { queue.push(neighbor); }
     });
 
     visited.push(currentTerritory);
     visitedList.push(currentTerritory);
   }
-  console.log('whileCount', whileCount);
 
   return {
     liberties: count,
@@ -92,16 +80,14 @@ function getNextPlayer(currentPlayerName: string, players: Player[]): Player {
 function getCapturedTerritories(
   territory: Territory,
   territories: Territory[],
-  currentPlayer: Player,
 ): Territory[] {
   const neighbors = getAdjacentTerritoriesList(territory, territories);
   let capturedTerritories: Territory[] = [];
 
   neighbors.forEach((neighborTerritory: Territory) => {
     const neighborOwner = neighborTerritory.owner;
-    if (!!neighborOwner && neighborOwner !== currentPlayer) {
+    if (!!neighborOwner && neighborOwner.id !== territory.owner?.id) {
       const groupedItems = getGroup(neighborTerritory, territories);
-
       if (groupedItems.liberties === 0) {
         capturedTerritories = capturedTerritories.concat(groupedItems.territories);
       }
