@@ -64,11 +64,9 @@ export default {
         territories,
         capturedTerritories,
       );
-      // console.log('isSuicidalMove', isSuicidalMove);
       if (isSuicidalMove) { return; }
-      // console.log('after suicidal check', isSuicidalMove);
-      const nextPlayer = BoardUtils.getNextPlayer(currentPlayer.name, players);
 
+      const nextPlayer = BoardUtils.getNextPlayer(currentPlayer.name, players);
       const capturedTerritoriesIds = capturedTerritories.map(
         (capturedTerritory: Territory) => capturedTerritory.id,
       );

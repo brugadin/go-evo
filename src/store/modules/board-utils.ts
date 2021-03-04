@@ -47,16 +47,15 @@ export const getGroup = (
 
   while (queue.length > 0) {
     // eslint-disable-next-line
-      const currentTerritory = queue.pop()!;
+    const currentTerritory = queue.pop()!;
     const hasVisited = visited.find(
       (visitedTerritory) => visitedTerritory.id === currentTerritory?.id,
     );
     // eslint-disable-next-line
-        if (hasVisited) { continue; }
+    if (hasVisited) { continue; }
 
     const neighbors = getAdjacentTerritoriesList(currentTerritory, territories);
-
-    count = neighbors.filter((neighbor: Territory) => !neighbor.owner).length;
+    count += neighbors.filter((neighbor: Territory) => !neighbor.owner).length;
     neighbors.forEach((neighbor: Territory) => {
       if (neighbor.owner?.id === ownerId) { queue.push(neighbor); }
     });
