@@ -41,11 +41,13 @@ export default {
       commit(fromMutationTypes.STAR_GAME, payload);
     },
     claimTerritory({ commit, state }: ActionContext<GameState, {}>, territoryId: number): void {
-      const { currentPlayer, territories } = state;
+      const { currentPlayer, territories } = { ...state };
       const territory = state.territories
         .find((item) => item?.id === territoryId && !item.owner) as Territory;
 
       if (!currentPlayer || !territory) { return; }
+
+      territory.owner = currentPlayer;
 
       const capturedTerritories: Territory[] = BoardUtils.getCapturedTerritories(
         territory,
@@ -56,7 +58,6 @@ export default {
       const isSuicidalMove = BoardUtils.isSuicidalMove(
         territory,
         territories,
-        currentPlayer,
         capturedTerritories,
       );
 
