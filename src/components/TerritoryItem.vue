@@ -46,7 +46,7 @@ export default defineComponent({
     }
 
     const state: ComponentState = reactive({
-      shadowType: computed(() => (!territoryItem.value.owner ? 'hover' : 'always')),
+      shadowType: computed(() => (territoryItem.value.owner ? 'never' : 'always')),
       backgroundColorStyle: computed(() => {
         const { owner } = territoryItem.value;
         return getBackgroundColorStyle(owner?.color || null);
