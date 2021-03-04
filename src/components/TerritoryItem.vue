@@ -71,6 +71,10 @@ export default defineComponent({
   font-size: $--font-size;
 }
 
+::v-deep .el-card {
+  border-radius: 15px;
+}
+
 ::v-deep .el-card__body {
   padding: 14px;
 }
