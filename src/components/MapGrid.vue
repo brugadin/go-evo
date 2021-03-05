@@ -10,7 +10,7 @@
 </template>
 
 <script lang='ts'>
-import { Territory } from '@/core/models';
+import { TerritoryData } from '@/core/entities/territory';
 import {
   computed, defineComponent, PropType, reactive, SetupContext, toRefs,
 } from 'vue';
@@ -21,7 +21,7 @@ interface ComponentState {
 }
 
 interface Props {
-  territoryItems: Territory[];
+  territoryItems: TerritoryData[];
 }
 
 export default defineComponent({
@@ -31,7 +31,7 @@ export default defineComponent({
   name: 'MapGrid',
   props: {
     territoryItems: {
-      type: Object as PropType<Territory[]>,
+      type: Object as PropType<TerritoryData[]>,
       default: () => ([]),
     },
   },
@@ -47,7 +47,7 @@ export default defineComponent({
       gridTemplateColumnStyle: computed(() => getColumnStyle()),
     });
 
-    function itemClicked(territory: Territory): void {
+    function itemClicked(territory: TerritoryData): void {
       emit('territory-clicked', territory);
     }
 

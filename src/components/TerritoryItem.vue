@@ -1,20 +1,20 @@
 <template>
-<el-card
-@click="itemClicked"
-:shadow="shadowType"
-:body-style="backgroundColorStyle"
-  class="grid-item" >
-</el-card>
+  <el-card
+    @click="itemClicked"
+    :shadow="shadowType"
+    :body-style="backgroundColorStyle"
+    class="grid-item" >
+  </el-card>
 </template>
 
 <script lang='ts' >
-import { Territory } from '@/core/models';
+import { TerritoryData } from '@/core/entities/territory';
 import {
   computed, defineComponent, PropType, reactive, SetupContext, toRefs,
 } from 'vue';
 
 interface Props {
-  territoryItem: Territory;
+  territoryItem: TerritoryData;
 }
 
 interface ComponentState {
@@ -26,7 +26,7 @@ export default defineComponent({
   name: 'TerritoryItem',
   props: {
     territoryItem: {
-      type: Object as PropType<Territory>,
+      type: Object as PropType<TerritoryData>,
       default: () => ({}),
     },
   },
@@ -71,11 +71,11 @@ export default defineComponent({
   font-size: $--font-size;
 }
 
-::v-deep .el-card {
+::v-deep(.el-card) {
   border-radius: 15px;
 }
 
-::v-deep .el-card__body {
+::v-deep(.el-card__body) {
   padding: 14px;
 }
 </style>

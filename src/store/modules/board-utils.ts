@@ -1,16 +1,17 @@
 import {
-  AdjacentTerritories, Player, Territory,
-} from '@/core/models';
+  PlayerData,
+} from '@/core/entities/player';
+import { TerritoryData, AdjacentTerritories } from '@/core/entities/territory';
 
 const getTerritoryByCoordinates = (
   row: number,
   column: number,
-  territories: Territory[],
-): Territory | undefined => territories.find(
-  (territory: Territory) => territory.column === column && territory.row === row,
+  territories: TerritoryData[],
+): TerritoryData | undefined => territories.find(
+  (territory: TerritoryData) => territory.column === column && territory.row === row,
 );
 
-const generateTerritories = (boardSize = 19): Territory[] => Array.from(
+const generateTerritories = (boardSize = 19): TerritoryData[] => Array.from(
   Array(boardSize),
   (rowItem, rowNumber) => Array.from(Array(boardSize),
     (columnItem, columnNumber) => ({
@@ -20,8 +21,8 @@ const generateTerritories = (boardSize = 19): Territory[] => Array.from(
   .flat(1);
 
 const getAdjacentTerritories = (
-  territory: Territory,
-  territories: Territory[],
+  territory: TerritoryData,
+  territories: TerritoryData[],
 ): AdjacentTerritories => ({
   top: getTerritoryByCoordinates(territory.row - 1, territory.column, territories),
   left: getTerritoryByCoordinates(territory.row, territory.column - 1, territories),
@@ -30,18 +31,18 @@ const getAdjacentTerritories = (
 } as AdjacentTerritories);
 
 const getAdjacentTerritoriesList = (
-  territory: Territory,
-  territories: Territory[],
-): Territory[] => Object.values(getAdjacentTerritories(territory, territories))
-  .filter((filterTerritory: Territory | undefined) => !!filterTerritory) as Territory[];
+  territory: TerritoryData,
+  territories: TerritoryData[],
+): TerritoryData[] => Object.values(getAdjacentTerritories(territory, territories))
+  .filter((filterTerritory: TerritoryData | undefined) => !!filterTerritory) as TerritoryData[];
 
 export const getGroup = (
-  territory: Territory,
-  territories: Territory[],
-): { liberties: number; territories: Territory[]} => {
-  const visited: Territory[] = [];
-  const visitedList: Territory[] = [];
-  const queue: Territory[] = [territory];
+  territory: TerritoryData,
+  territories: TerritoryData[],
+): { liberties: number; territories: TerritoryData[]} => {
+  const visited: TerritoryData[] = [];
+  const visitedList: TerritoryData[] = [];
+  const queue: TerritoryData[] = [territory];
   let count = 0;
   const ownerId = territory.owner?.id;
 
@@ -55,8 +56,8 @@ export const getGroup = (
     if (hasVisited) { continue; }
 
     const neighbors = getAdjacentTerritoriesList(currentTerritory, territories);
-    count += neighbors.filter((neighbor: Territory) => !neighbor.owner).length;
-    neighbors.forEach((neighbor: Territory) => {
+    count += neighbors.filter((neighbor: TerritoryData) => !neighbor.owner).length;
+    neighbors.forEach((neighbor: TerritoryData) => {
       if (neighbor.owner?.id === ownerId) { queue.push(neighbor); }
     });
 
@@ -70,20 +71,20 @@ export const getGroup = (
   };
 };
 
-function getNextPlayer(currentPlayerName: string, players: Player[]): Player {
+function getNextPlayer(currentPlayerName: string, players: PlayerData[]): PlayerData {
   const playerIndex = players
-    .findIndex((player: Player) => (currentPlayerName === player.name));
+    .findIndex((player: PlayerData) => (currentPlayerName === player.name));
   return players[playerIndex + 1] || players[0];
 }
 
 function getCapturedTerritories(
-  territory: Territory,
-  territories: Territory[],
-): Territory[] {
+  territory: TerritoryData,
+  territories: TerritoryData[],
+): TerritoryData[] {
   const neighbors = getAdjacentTerritoriesList(territory, territories);
-  let capturedTerritories: Territory[] = [];
+  let capturedTerritories: TerritoryData[] = [];
 
-  neighbors.forEach((neighborTerritory: Territory) => {
+  neighbors.forEach((neighborTerritory: TerritoryData) => {
     const neighborOwner = neighborTerritory.owner;
     if (!!neighborOwner && neighborOwner.id !== territory.owner?.id) {
       const groupedItems = getGroup(neighborTerritory, territories);
@@ -96,9 +97,9 @@ function getCapturedTerritories(
 }
 
 const isSuicidalMove = (
-  territory: Territory,
-  territories: Territory[],
-  capturedTerritories: Territory[],
+  territory: TerritoryData,
+  territories: TerritoryData[],
+  capturedTerritories: TerritoryData[],
 ): boolean => (capturedTerritories.length === 0
     && getGroup(territory, territories).liberties === 0);
 

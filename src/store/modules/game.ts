@@ -1,4 +1,4 @@
-import { Territory } from '@/core/models';
+import { TerritoryData } from '@/core/entities/territory';
 import { ActionContext } from 'vuex';
 import BoardUtils from './board-utils';
 import { ClaimTerritoryPayload, GameState, StartGamePayload } from './models';
@@ -21,7 +21,7 @@ export default {
     },
     [fromMutationTypes.CLAIM_TERRITORY](state: GameState, payload: ClaimTerritoryPayload): void {
       const territory = state.territories
-        .find((item) => item?.id === payload.territoryId) as Territory;
+        .find((item) => item?.id === payload.territoryId) as TerritoryData;
 
       territory.owner = payload.currentPlayer;
       payload.capturedTerritoriesIds.forEach((id: number) => {
@@ -48,13 +48,13 @@ export default {
       } = JSON.parse(JSON.stringify(state)) as GameState;
 
       const territory = territories
-        .find((item) => item?.id === territoryId && !item.owner) as Territory;
+        .find((item) => item?.id === territoryId && !item.owner) as TerritoryData;
 
       if (!currentPlayer || !territory) { return; }
 
       territory.owner = currentPlayer;
 
-      const capturedTerritories: Territory[] = BoardUtils.getCapturedTerritories(
+      const capturedTerritories: TerritoryData[] = BoardUtils.getCapturedTerritories(
         territory,
         territories,
       );
@@ -68,7 +68,7 @@ export default {
 
       const nextPlayer = BoardUtils.getNextPlayer(currentPlayer.name, players);
       const capturedTerritoriesIds = capturedTerritories.map(
-        (capturedTerritory: Territory) => capturedTerritory.id,
+        (capturedTerritory: TerritoryData) => capturedTerritory.id,
       );
 
       commit(fromMutationTypes.CLAIM_TERRITORY, {

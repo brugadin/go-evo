@@ -17,15 +17,16 @@
 <script lang="ts">
 import MapGrid from '@/components/MapGrid.vue';
 import Players from '@/components/Players.vue';
-import { Player, Territory } from '@/core/models';
+import { PlayerData } from '@/core/entities/player';
+import { TerritoryData } from '@/core/entities/territory';
 import {
   computed, defineComponent, onMounted, reactive, toRefs,
 } from 'vue';
 import useGame from './use-game';
 
 interface ComponentState {
-  territoryItems: Territory[];
-  players: Player[];
+  territoryItems: TerritoryData[];
+  players: PlayerData[];
   currentPlayerName: string;
 }
 
@@ -50,7 +51,7 @@ export default defineComponent({
       currentPlayerName: computed(() => getCurrentPlayerName()),
     });
 
-    function territoryClicked(territory: Territory): void {
+    function territoryClicked(territory: TerritoryData): void {
       claimTerritory(territory.id);
     }
 

@@ -11,14 +11,14 @@
 </template>
 
 <script lang='ts'>
-import { Player } from '@/core/models';
+import { PlayerData } from '@/core/entities/player';
 import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   name: 'Players',
   props: {
     players: {
-      type: Object as PropType<Player[]>,
+      type: Object as PropType<PlayerData[]>,
       default: () => ([]),
     },
     currentPlayerName: {

@@ -1,4 +1,5 @@
-import { Player, Territory } from '@/core/models';
+import { PlayerData } from '@/core/entities/player';
+import { TerritoryData } from '@/core/entities/territory';
 import store from '@/store';
 
 function startGame(): void {
@@ -9,7 +10,7 @@ function claimTerritory(territoryId: number): void {
   store.dispatch('game/claimTerritory', territoryId);
 }
 
-function getPlayers(): Player[] {
+function getPlayers(): PlayerData[] {
   return store.getters['game/players'];
 }
 
@@ -17,7 +18,7 @@ function getCurrentPlayerName(): string {
   return store.getters['game/currentPlayerName'];
 }
 
-function getTerritories(): Territory[] {
+function getTerritories(): TerritoryData[] {
   return store.getters['game/territoryItems'];
 }
 
