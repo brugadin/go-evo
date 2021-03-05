@@ -1,9 +1,8 @@
 import { TerritoryData } from '@/core/entities/territory';
-import { ActionContext } from 'vuex';
+import { ActionContext, Store } from 'vuex';
 import BoardUtils from './board-utils';
 import { ClaimTerritoryPayload, GameState, StartGamePayload } from './models';
 import * as fromMutationTypes from './mutation-types';
-import PlayerUtils from './player-utils';
 
 export default {
   strict: true,
@@ -33,12 +32,8 @@ export default {
     },
   },
   actions: {
-    startGame({ commit }: ActionContext<GameState, {}>): void {
-      const players = PlayerUtils.generatePlayers();
-      const territories = BoardUtils.generateTerritories();
-      const [currentPlayer] = players;
-      const payload: StartGamePayload = { territories, players, currentPlayer };
-      commit(fromMutationTypes.STAR_GAME, payload);
+    startGame(this: Store<any>, { commit }: ActionContext<GameState, {}>): void {
+      commit(fromMutationTypes.STAR_GAME, this.$services.board.startGame());
     },
     claimTerritory({ commit, state }: ActionContext<GameState, {}>, territoryId: number): void {
       const {

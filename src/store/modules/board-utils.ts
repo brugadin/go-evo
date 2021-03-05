@@ -1,7 +1,5 @@
-import {
-  PlayerData,
-} from '@/core/entities/player';
-import { TerritoryData, AdjacentTerritories } from '@/core/entities/territory';
+import { PlayerData } from '@/core/entities/player';
+import { AdjacentTerritories, TerritoryData } from '@/core/entities/territory';
 
 const getTerritoryByCoordinates = (
   row: number,
