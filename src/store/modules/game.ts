@@ -1,6 +1,4 @@
-import { TerritoryData } from '@/core/entities/territory';
 import { ActionContext } from 'vuex';
-import BoardUtils from './board-utils';
 import {
   AppStore, ClaimTerritoryPayload, GameState, StartGamePayload,
 } from './models';
