@@ -1,2 +1,2 @@
-export * from './board.service';
+export * from './game.service';
 export * from './provider.service';

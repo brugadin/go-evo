@@ -21,59 +21,38 @@ export default {
       state.currentPlayer = payload.currentPlayer;
     },
     [fromMutationTypes.CLAIM_TERRITORY](state: GameState, payload: ClaimTerritoryPayload): void {
-      const territory = state.territories
-        .find((item) => item?.id === payload.territoryId) as TerritoryData;
-
-      territory.owner = payload.currentPlayer;
-      payload.capturedTerritoriesIds.forEach((id: number) => {
-        const foundTerritory = state.territories.find((item) => id === item.id);
-        if (foundTerritory) { foundTerritory.owner = undefined; }
-      });
-
+      state.territories = payload.territories;
       state.currentPlayer = payload.nextPlayer;
     },
   },
   actions: {
     startGame(this: AppStore, { commit }: ActionContext<GameState, {}>): void {
-      commit(fromMutationTypes.STAR_GAME, this.$services.board.startGame());
+      commit(fromMutationTypes.STAR_GAME, this.$services.game.startGame());
     },
-    claimTerritory({ commit, state }: ActionContext<GameState, {}>, territoryId: number): void {
+    claimTerritory(this: AppStore,
+      { commit, state }: ActionContext<GameState, {}>,
+      territoryId: number): void {
       const {
         currentPlayer,
         territories,
         players,
       } = JSON.parse(JSON.stringify(state)) as GameState;
 
-      const territory = territories
-        .find((item) => item?.id === territoryId && !item.owner) as TerritoryData;
+      if (!currentPlayer) { return; }
 
-      if (!currentPlayer || !territory) { return; }
-
-      territory.owner = currentPlayer;
-
-      const capturedTerritories: TerritoryData[] = BoardUtils.getCapturedTerritories(
-        territory,
-        territories,
-      );
-
-      const isSuicidalMove = BoardUtils.isSuicidalMove(
-        territory,
-        territories,
-        capturedTerritories,
-      );
-      if (isSuicidalMove) { return; }
-
-      const nextPlayer = BoardUtils.getNextPlayer(currentPlayer.name, players);
-      const capturedTerritoriesIds = capturedTerritories.map(
-        (capturedTerritory: TerritoryData) => capturedTerritory.id,
-      );
-
-      commit(fromMutationTypes.CLAIM_TERRITORY, {
+      const playResult = this.$services.game.play(
         territoryId,
-        currentPlayer,
-        nextPlayer,
-        capturedTerritoriesIds,
-      });
+        { territories, players, currentPlayer },
+      );
+
+      if (playResult) {
+        commit(fromMutationTypes.CLAIM_TERRITORY, {
+          territories: playResult.territories,
+          nextPlayer: playResult.nextPlayer,
+        });
+      }
+
+      console.log(playResult);
     },
   },
   getters: {

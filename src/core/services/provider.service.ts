@@ -1,9 +1,9 @@
-import { BoardService } from './board.service';
+import { GameService } from './game.service';
 
 export interface Provider {
-  board: BoardService;
+  game: GameService;
 }
 
 export const provider = (): Provider => ({
-  board: new BoardService(),
+  game: new GameService(),
 });

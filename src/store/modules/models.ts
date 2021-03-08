@@ -24,8 +24,6 @@ export interface StartGamePayload {
 }
 
 export interface ClaimTerritoryPayload {
-  territoryId: number;
-  currentPlayer: PlayerData;
   nextPlayer: PlayerData;
-  capturedTerritoriesIds: number[];
+  territories: TerritoryData[];
 }
