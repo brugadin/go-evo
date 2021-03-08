@@ -1,7 +1,9 @@
 import { TerritoryData } from '@/core/entities/territory';
-import { ActionContext, Store } from 'vuex';
+import { ActionContext } from 'vuex';
 import BoardUtils from './board-utils';
-import { ClaimTerritoryPayload, GameState, StartGamePayload } from './models';
+import {
+  AppStore, ClaimTerritoryPayload, GameState, StartGamePayload,
+} from './models';
 import * as fromMutationTypes from './mutation-types';
 
 export default {
@@ -32,7 +34,7 @@ export default {
     },
   },
   actions: {
-    startGame(this: Store<any>, { commit }: ActionContext<GameState, {}>): void {
+    startGame(this: AppStore, { commit }: ActionContext<GameState, {}>): void {
       commit(fromMutationTypes.STAR_GAME, this.$services.board.startGame());
     },
     claimTerritory({ commit, state }: ActionContext<GameState, {}>, territoryId: number): void {

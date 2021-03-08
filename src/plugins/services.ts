@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { provider } from '@/core/services';
-import { Store } from 'vuex';
+import { AppStore } from '@/store/modules/models';
 
-export const prepareServices = (store: Store<any>): void => {
+export const prepareServices = (store: AppStore): void => {
   store.$services = provider();
 };

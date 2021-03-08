@@ -7,6 +7,13 @@ export class BoardService {
 
     private readonly numberOfPlayers = 2;
 
+    startGame = (): BoardData => {
+      const players = this.generatePlayers();
+      const territories = this.generateTerritories();
+      const [currentPlayer] = players;
+      return { territories, players, currentPlayer };
+    }
+
     private generatePlayers = (): PlayerData[] => Array.from(
       Array(this.numberOfPlayers),
       (rowItem, playerNumber) => ({
@@ -22,11 +29,4 @@ export class BoardService {
         })),
     )
       .flat(1);
-
-    startGame(): BoardData {
-      const players = this.generatePlayers();
-      const territories = this.generateTerritories();
-      const [currentPlayer] = players;
-      return { territories, players, currentPlayer };
-    }
 }
