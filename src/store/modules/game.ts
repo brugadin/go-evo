@@ -51,8 +51,6 @@ export default {
           nextPlayer: playResult.nextPlayer,
         });
       }
-
-      console.log(playResult);
     },
   },
   getters: {
