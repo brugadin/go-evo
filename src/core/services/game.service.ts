@@ -20,18 +20,18 @@ export class GameService {
       return { intersections, players, currentPlayer };
     }
 
-    play = (territoryId: number, boardData: BoardData): PlayResults | undefined => {
+    play = (intersectionId: number, boardData: BoardData): PlayResults | undefined => {
       const board = new Board(boardData);
 
-      const territory = board.intersections
-        .find((item) => item?.id === territoryId && !item.owner) as IntersectionData;
+      const intersection = board.intersections
+        .find((item) => item?.id === intersectionId && !item.owner) as IntersectionData;
 
-      if (!board.currentPlayer || !territory) { return undefined; }
+      if (!board.currentPlayer || !intersection) { return undefined; }
 
-      territory.owner = board.currentPlayer;
-      const capturedIntersectionsIds = board.getCapturedIntersectionsIds(territory);
+      intersection.owner = board.currentPlayer;
+      const capturedIntersectionsIds = board.getCapturedIntersectionsIds(intersection);
       if (capturedIntersectionsIds.length === 0) {
-        const isSuicidalMove = board.getGroup(territory).liberties === 0;
+        const isSuicidalMove = board.getGroup(intersection).liberties === 0;
         if (isSuicidalMove) { return undefined; }
       }
 

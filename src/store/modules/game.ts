@@ -18,7 +18,10 @@ export default {
       state.players = payload.players;
       state.currentPlayer = payload.currentPlayer;
     },
-    [fromMutationTypes.CLAIM_TERRITORY](state: GameState, payload: ClaimIntersectionPayload): void {
+    [fromMutationTypes.CLAIM_INTERSECTION](
+      state: GameState,
+      payload: ClaimIntersectionPayload,
+    ): void {
       state.intersections = payload.intersections;
       state.currentPlayer = payload.nextPlayer;
     },
@@ -29,7 +32,7 @@ export default {
     },
     claimIntersection(this: AppStore,
       { commit, state }: ActionContext<GameState, {}>,
-      territoryId: number): void {
+      intersectionId: number): void {
       const {
         currentPlayer,
         intersections,
@@ -39,12 +42,12 @@ export default {
       if (!currentPlayer) { return; }
 
       const playResult = this.$services.game.play(
-        territoryId,
+        intersectionId,
         { intersections, players, currentPlayer },
       );
 
       if (playResult) {
-        commit(fromMutationTypes.CLAIM_TERRITORY, {
+        commit(fromMutationTypes.CLAIM_INTERSECTION, {
           intersections: playResult.intersections,
           nextPlayer: playResult.nextPlayer,
         });
@@ -52,7 +55,7 @@ export default {
     },
   },
   getters: {
-    territoryItems: (state: GameState) => state.intersections,
+    intersectionItems: (state: GameState) => state.intersections,
     players: (state: GameState) => state.players,
     currentPlayerName: (state: GameState) => state.currentPlayer?.name,
   },
