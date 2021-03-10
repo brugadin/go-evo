@@ -3,6 +3,7 @@ import { BoardData } from '@/core/entities/board/board.data';
 import { PlayerData } from '@/core/entities/player';
 import { IntersectionData } from '@/core/entities/intersection';
 import { TerritoryService } from './territory.service';
+import mockData from './tmpTerritories';
 
 export interface PlayResults {
   nextPlayer: PlayerData;
@@ -14,38 +15,38 @@ export class GameService {
 
     private readonly numberOfPlayers = 2;
 
-    constructor(private territoryService: TerritoryService) {
-      console.log(this.territoryService);
-    }
+    constructor(private territoryService: TerritoryService) {}
 
     startGame = (): BoardData => {
       const players = this.generatePlayers();
-      const intersections = this.generateIntersections();
+      // const intersections = this.generateIntersections();
+      const { intersections } = mockData;
       const [currentPlayer] = players;
       return { intersections, players, currentPlayer };
     }
 
     play = (intersectionId: number, boardData: BoardData): PlayResults | undefined => {
       const board = new Board(boardData);
+      this.territoryService.getTerritories(board);
+      return undefined;
+      // const intersection = board.intersections
+      //   .find((item) => item?.id === intersectionId && !item.owner) as IntersectionData;
 
-      const intersection = board.intersections
-        .find((item) => item?.id === intersectionId && !item.owner) as IntersectionData;
+      // if (!board.currentPlayer || !intersection) { return undefined; }
 
-      if (!board.currentPlayer || !intersection) { return undefined; }
+      // intersection.owner = board.currentPlayer;
+      // const capturedIntersectionsIds = board.getCapturedIntersectionsIds(intersection);
+      // if (capturedIntersectionsIds.length === 0) {
+      //   const isSuicidalMove = board.getIntersectionGroup(intersection).liberties === 0;
+      //   if (isSuicidalMove) { return undefined; }
+      // }
 
-      intersection.owner = board.currentPlayer;
-      const capturedIntersectionsIds = board.getCapturedIntersectionsIds(intersection);
-      if (capturedIntersectionsIds.length === 0) {
-        const isSuicidalMove = board.getIntersectionGroup(intersection).liberties === 0;
-        if (isSuicidalMove) { return undefined; }
-      }
-
-      board.liberateIntersectionsById(capturedIntersectionsIds);
-      const nextPlayer = this.getNextPlayer(board);
-      return {
-        nextPlayer,
-        intersections: board.intersections,
-      };
+      // board.liberateIntersectionsById(capturedIntersectionsIds);
+      // const nextPlayer = this.getNextPlayer(board);
+      // return {
+      //   nextPlayer,
+      //   intersections: board.intersections,
+      // };
     }
 
     private generatePlayers = (): PlayerData[] => Array.from(

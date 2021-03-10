@@ -30,7 +30,7 @@ export class Board implements BoardData {
       );
     }
 
-    private getAdjacentIntersectionsList(
+    getAdjacentIntersectionsList(
       intersection: IntersectionData,
     ): IntersectionData[] {
       return Object.values(this.getAdjacentIntersections(intersection))
