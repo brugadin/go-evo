@@ -1,8 +1,10 @@
-import { PlayerData } from '../player';
 import {
+  IntersectionGroup,
   AdjacentIntersections,
   IntersectionData,
-} from '../intersection';
+} from '@/core/entities/intersection';
+import { PlayerData } from '../player';
+
 import { BoardData } from './board.data';
 
 export class Board implements BoardData {
@@ -18,31 +20,37 @@ export class Board implements BoardData {
       this.currentPlayer = data.currentPlayer;
     }
 
-    private getIntersectionByCoordinates = (
+    private getIntersectionByCoordinates(
       row: number,
       column: number,
-    ): IntersectionData | undefined => this.intersections.find(
-      (intersection: IntersectionData) => intersection.column === column
+    ): IntersectionData | undefined {
+      return this.intersections.find(
+        (intersection: IntersectionData) => intersection.column === column
       && intersection.row === row,
-    );
+      );
+    }
 
-    private getAdjacentIntersections = (
+    private getAdjacentIntersectionsList(
       intersection: IntersectionData,
-    ): AdjacentIntersections => ({
-      top: this.getIntersectionByCoordinates(intersection.row - 1, intersection.column),
-      left: this.getIntersectionByCoordinates(intersection.row, intersection.column - 1),
-      bottom: this.getIntersectionByCoordinates(intersection.row + 1, intersection.column),
-      right: this.getIntersectionByCoordinates(intersection.row, intersection.column + 1),
-    } as AdjacentIntersections);
+    ): IntersectionData[] {
+      return Object.values(this.getAdjacentIntersections(intersection))
+        .filter(
+          (filterIntersection: IntersectionData | undefined) => !!filterIntersection,
+        ) as IntersectionData[];
+    }
 
-    private getAdjacentIntersectionsList = (
+    getAdjacentIntersections(
       intersection: IntersectionData,
-    ): IntersectionData[] => Object.values(this.getAdjacentIntersections(intersection))
-      .filter(
-        (filterIntersection: IntersectionData | undefined) => !!filterIntersection,
-      ) as IntersectionData[];
+    ): AdjacentIntersections {
+      return {
+        top: this.getIntersectionByCoordinates(intersection.row - 1, intersection.column),
+        left: this.getIntersectionByCoordinates(intersection.row, intersection.column - 1),
+        bottom: this.getIntersectionByCoordinates(intersection.row + 1, intersection.column),
+        right: this.getIntersectionByCoordinates(intersection.row, intersection.column + 1),
+      } as AdjacentIntersections;
+    }
 
-    liberateIntersectionsById = (liberatedIntersectionsIds: number[]): IntersectionData[] => {
+    liberateIntersectionsById(liberatedIntersectionsIds: number[]): IntersectionData[] {
       const liberatedIntersections: IntersectionData[] = [];
       liberatedIntersectionsIds.forEach((id: number) => {
         const foundIntersection = this.intersections.find((item) => id === item.id);
@@ -64,7 +72,7 @@ export class Board implements BoardData {
       neighbors.forEach((neighborIntersection: IntersectionData) => {
         const neighborOwner = neighborIntersection.owner;
         if (!!neighborOwner && neighborOwner.id !== intersection.owner?.id) {
-          const groupedItems = this.getGroup(neighborIntersection);
+          const groupedItems = this.getIntersectionGroup(neighborIntersection);
           if (groupedItems.liberties === 0) {
             capturedIntersections = capturedIntersections.concat(groupedItems.intersections);
           }
@@ -74,9 +82,9 @@ export class Board implements BoardData {
         .map((capturedIntersection: IntersectionData) => capturedIntersection.id);
     }
 
-    getGroup = (
+    getIntersectionGroup(
       intersection: IntersectionData,
-    ): { liberties: number; intersections: IntersectionData[]} => {
+    ): IntersectionGroup {
       const visited: IntersectionData[] = [];
       const visitedList: IntersectionData[] = [];
       const queue: IntersectionData[] = [intersection];
@@ -106,5 +114,5 @@ export class Board implements BoardData {
         liberties: count,
         intersections: visitedList,
       };
-    };
+    }
 }

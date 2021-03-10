@@ -2,6 +2,7 @@ import { Board } from '@/core/entities/board/board';
 import { BoardData } from '@/core/entities/board/board.data';
 import { PlayerData } from '@/core/entities/player';
 import { IntersectionData } from '@/core/entities/intersection';
+import { TerritoryService } from './territory.service';
 
 export interface PlayResults {
   nextPlayer: PlayerData;
@@ -12,6 +13,10 @@ export class GameService {
     private readonly boardSize = 19;
 
     private readonly numberOfPlayers = 2;
+
+    constructor(private territoryService: TerritoryService) {
+      console.log(this.territoryService);
+    }
 
     startGame = (): BoardData => {
       const players = this.generatePlayers();
@@ -31,7 +36,7 @@ export class GameService {
       intersection.owner = board.currentPlayer;
       const capturedIntersectionsIds = board.getCapturedIntersectionsIds(intersection);
       if (capturedIntersectionsIds.length === 0) {
-        const isSuicidalMove = board.getGroup(intersection).liberties === 0;
+        const isSuicidalMove = board.getIntersectionGroup(intersection).liberties === 0;
         if (isSuicidalMove) { return undefined; }
       }
 

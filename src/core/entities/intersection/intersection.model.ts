@@ -13,3 +13,8 @@ export interface AdjacentIntersections {
     bottom?: IntersectionData;
     left?: IntersectionData;
 }
+
+export interface IntersectionGroupData {
+    intersections: IntersectionData[];
+    liberties: number;
+}
