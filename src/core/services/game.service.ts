@@ -5,7 +5,7 @@ import { IntersectionData } from '@/core/entities/intersection';
 
 export interface PlayResults {
   nextPlayer: PlayerData;
-  territories: IntersectionData[];
+  intersections: IntersectionData[];
 }
 
 export class GameService {
@@ -15,31 +15,31 @@ export class GameService {
 
     startGame = (): BoardData => {
       const players = this.generatePlayers();
-      const territories = this.generateTerritories();
+      const intersections = this.generateIntersections();
       const [currentPlayer] = players;
-      return { territories, players, currentPlayer };
+      return { intersections, players, currentPlayer };
     }
 
     play = (territoryId: number, boardData: BoardData): PlayResults | undefined => {
       const board = new Board(boardData);
 
-      const territory = board.territories
+      const territory = board.intersections
         .find((item) => item?.id === territoryId && !item.owner) as IntersectionData;
 
       if (!board.currentPlayer || !territory) { return undefined; }
 
       territory.owner = board.currentPlayer;
-      const capturedTerritoriesIds = board.getCapturedTerritoriesIds(territory);
-      if (capturedTerritoriesIds.length === 0) {
+      const capturedIntersectionsIds = board.getCapturedIntersectionsIds(territory);
+      if (capturedIntersectionsIds.length === 0) {
         const isSuicidalMove = board.getGroup(territory).liberties === 0;
         if (isSuicidalMove) { return undefined; }
       }
 
-      board.liberateTerritoriesById(capturedTerritoriesIds);
+      board.liberateIntersectionsById(capturedIntersectionsIds);
       const nextPlayer = this.getNextPlayer(board);
       return {
         nextPlayer,
-        territories: board.territories,
+        intersections: board.intersections,
       };
     }
 
@@ -50,7 +50,7 @@ export class GameService {
       }),
     );
 
-    private generateTerritories = (): IntersectionData[] => Array.from(
+    private generateIntersections = (): IntersectionData[] => Array.from(
       Array(this.boardSize),
       (rowItem, rowNumber) => Array.from(Array(this.boardSize),
         (columnItem, columnNumber) => ({

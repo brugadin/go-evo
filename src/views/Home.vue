@@ -6,7 +6,9 @@
       <el-container>
         <el-main class="main-content">
           <div class="game-map-container">
-            <MapGrid :territoryItems="territoryItems" @territoryClicked="territoryClicked"  />
+            <MapGrid
+            :intersectionItems="intersectionItems"
+            @intersectionClicked="intersectionClicked"  />
         </div>
         </el-main>
       </el-container>
@@ -25,7 +27,7 @@ import {
 import useGame from './use-game';
 
 interface ComponentState {
-  territoryItems: IntersectionData[];
+  intersectionItems: IntersectionData[];
   players: PlayerData[];
   currentPlayerName: string;
 }
@@ -39,27 +41,27 @@ export default defineComponent({
   setup() {
     const {
       startGame,
-      claimTerritory,
-      getTerritories,
+      claimIntersection,
+      getIntersections,
       getPlayers,
       getCurrentPlayerName,
     } = useGame();
 
     const state: ComponentState = reactive({
-      territoryItems: computed(() => getTerritories()),
+      intersectionItems: computed(() => getIntersections()),
       players: computed(() => getPlayers()),
       currentPlayerName: computed(() => getCurrentPlayerName()),
     });
 
-    function territoryClicked(territory: IntersectionData): void {
-      claimTerritory(territory.id);
+    function intersectionClicked(intersection: IntersectionData): void {
+      claimIntersection(intersection.id);
     }
 
     onMounted(() => startGame());
 
     return {
       ...toRefs(state),
-      territoryClicked,
+      intersectionClicked,
     };
   },
 });

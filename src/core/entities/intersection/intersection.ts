@@ -1,7 +1,7 @@
 import { Player } from '../player';
 import { IntersectionData } from './intersection.model';
 
-export class Territory implements IntersectionData {
+export class Intersection implements IntersectionData {
     readonly id: number;
 
     readonly row: number;

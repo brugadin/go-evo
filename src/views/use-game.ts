@@ -6,8 +6,8 @@ function startGame(): void {
   store.dispatch('game/startGame');
 }
 
-function claimTerritory(territoryId: number): void {
-  store.dispatch('game/claimTerritory', territoryId);
+function claimIntersection(territoryId: number): void {
+  store.dispatch('game/claimIntersection', territoryId);
 }
 
 function getPlayers(): PlayerData[] {
@@ -18,15 +18,15 @@ function getCurrentPlayerName(): string {
   return store.getters['game/currentPlayerName'];
 }
 
-function getTerritories(): IntersectionData[] {
+function getIntersections(): IntersectionData[] {
   return store.getters['game/territoryItems'];
 }
 
 export default function useGame() {
   return {
-    claimTerritory,
+    claimIntersection,
     startGame,
-    getTerritories,
+    getIntersections,
     getPlayers,
     getCurrentPlayerName,
   };

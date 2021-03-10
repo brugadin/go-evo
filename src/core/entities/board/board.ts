@@ -1,16 +1,19 @@
 import { PlayerData } from '../player';
-import { AdjacentTerritories, IntersectionData } from '../intersection';
+import {
+  AdjacentIntersections,
+  IntersectionData,
+} from '../intersection';
 import { BoardData } from './board.data';
 
 export class Board implements BoardData {
-    readonly territories: IntersectionData[];
+    readonly intersections: IntersectionData[];
 
     readonly players: PlayerData[];
 
     readonly currentPlayer: PlayerData;
 
     constructor(data: BoardData) {
-      this.territories = data.territories;
+      this.intersections = data.intersections;
       this.players = data.players;
       this.currentPlayer = data.currentPlayer;
     }
@@ -18,65 +21,67 @@ export class Board implements BoardData {
     private getTerritoryByCoordinates = (
       row: number,
       column: number,
-    ): IntersectionData | undefined => this.territories.find(
-      (territory: IntersectionData) => territory.column === column && territory.row === row,
+    ): IntersectionData | undefined => this.intersections.find(
+      (intersection: IntersectionData) => intersection.column === column
+      && intersection.row === row,
     );
 
-    private getAdjacentTerritories = (
-      territory: IntersectionData,
-    ): AdjacentTerritories => ({
-      top: this.getTerritoryByCoordinates(territory.row - 1, territory.column),
-      left: this.getTerritoryByCoordinates(territory.row, territory.column - 1),
-      bottom: this.getTerritoryByCoordinates(territory.row + 1, territory.column),
-      right: this.getTerritoryByCoordinates(territory.row, territory.column + 1),
-    } as AdjacentTerritories);
+    private getAdjacentIntersections = (
+      intersection: IntersectionData,
+    ): AdjacentIntersections => ({
+      top: this.getTerritoryByCoordinates(intersection.row - 1, intersection.column),
+      left: this.getTerritoryByCoordinates(intersection.row, intersection.column - 1),
+      bottom: this.getTerritoryByCoordinates(intersection.row + 1, intersection.column),
+      right: this.getTerritoryByCoordinates(intersection.row, intersection.column + 1),
+    } as AdjacentIntersections);
 
-    private getAdjacentTerritoriesList = (
-      territory: IntersectionData,
-    ): IntersectionData[] => Object.values(this.getAdjacentTerritories(territory))
+    private getAdjacentIntersectionsList = (
+      intersection: IntersectionData,
+    ): IntersectionData[] => Object.values(this.getAdjacentIntersections(intersection))
       .filter(
         (filterTerritory: IntersectionData | undefined) => !!filterTerritory,
       ) as IntersectionData[];
 
-    liberateTerritoriesById = (liberatedTerritoriesIds: number[]): IntersectionData[] => {
-      const liberatedTerritories: IntersectionData[] = [];
-      liberatedTerritoriesIds.forEach((id: number) => {
-        const foundTerritory = this.territories.find((item) => id === item.id);
+    liberateIntersectionsById = (liberatedIntersectionsIds: number[]): IntersectionData[] => {
+      const liberatedIntersections: IntersectionData[] = [];
+      liberatedIntersectionsIds.forEach((id: number) => {
+        const foundTerritory = this.intersections.find((item) => id === item.id);
         if (foundTerritory) {
           foundTerritory.owner = undefined;
-          liberatedTerritories.push(foundTerritory);
+          liberatedIntersections.push(foundTerritory);
         }
       });
 
-      return liberatedTerritories;
+      return liberatedIntersections;
     }
 
-    getCapturedTerritoriesIds(
-      territory: IntersectionData,
+    getCapturedIntersectionsIds(
+      intersection: IntersectionData,
     ): number[] {
-      const neighbors = this.getAdjacentTerritoriesList(territory);
-      let capturedTerritories: IntersectionData[] = [];
+      const neighbors = this.getAdjacentIntersectionsList(intersection);
+      let capturedIntersections: IntersectionData[] = [];
 
       neighbors.forEach((neighborTerritory: IntersectionData) => {
         const neighborOwner = neighborTerritory.owner;
-        if (!!neighborOwner && neighborOwner.id !== territory.owner?.id) {
+        if (!!neighborOwner && neighborOwner.id !== intersection.owner?.id) {
           const groupedItems = this.getGroup(neighborTerritory);
           if (groupedItems.liberties === 0) {
-            capturedTerritories = capturedTerritories.concat(groupedItems.territories);
+            capturedIntersections = capturedIntersections.concat(groupedItems.intersections);
           }
         }
       });
-      return capturedTerritories.map((capturedTerritory: IntersectionData) => capturedTerritory.id);
+      return capturedIntersections
+        .map((capturedTerritory: IntersectionData) => capturedTerritory.id);
     }
 
     getGroup = (
-      territory: IntersectionData,
-    ): { liberties: number; territories: IntersectionData[]} => {
+      intersection: IntersectionData,
+    ): { liberties: number; intersections: IntersectionData[]} => {
       const visited: IntersectionData[] = [];
       const visitedList: IntersectionData[] = [];
-      const queue: IntersectionData[] = [territory];
+      const queue: IntersectionData[] = [intersection];
       let count = 0;
-      const ownerId = territory.owner?.id;
+      const ownerId = intersection.owner?.id;
 
       while (queue.length > 0) {
         // eslint-disable-next-line
@@ -87,7 +92,7 @@ export class Board implements BoardData {
         // eslint-disable-next-line
         if (hasVisited) { continue; }
 
-        const neighbors = this.getAdjacentTerritoriesList(currentTerritory);
+        const neighbors = this.getAdjacentIntersectionsList(currentTerritory);
         count += neighbors.filter((neighbor: IntersectionData) => !neighbor.owner).length;
         neighbors.forEach((neighbor: IntersectionData) => {
           if (neighbor.owner?.id === ownerId) { queue.push(neighbor); }
@@ -99,7 +104,7 @@ export class Board implements BoardData {
 
       return {
         liberties: count,
-        territories: visitedList,
+        intersections: visitedList,
       };
     };
 }

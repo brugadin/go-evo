@@ -2,7 +2,7 @@
 <div class="grid" :style="gridTemplateColumnStyle">
     <IntersectionItem
       class="item"
-      v-for="item in territoryItems"
+      v-for="item in intersectionItems"
       :key="item.id"
       :intersectionItem="item"
       @itemClicked="itemClicked" />
@@ -21,7 +21,7 @@ interface ComponentState {
 }
 
 interface Props {
-  territoryItems: IntersectionData[];
+  intersectionItems: IntersectionData[];
 }
 
 export default defineComponent({
@@ -30,16 +30,16 @@ export default defineComponent({
   },
   name: 'MapGrid',
   props: {
-    territoryItems: {
+    intersectionItems: {
       type: Object as PropType<IntersectionData[]>,
       default: () => ([]),
     },
   },
   setup(props: Props, { emit }: SetupContext) {
-    const { territoryItems } = toRefs(props);
+    const { intersectionItems } = toRefs(props);
 
     function getColumnStyle(): string {
-      const columns = Math.sqrt(territoryItems.value.length);
+      const columns = Math.sqrt(intersectionItems.value.length);
       return `grid-template-columns: repeat(${columns}, 1fr); width: ${columns * 30}px`;
     }
 
@@ -47,8 +47,8 @@ export default defineComponent({
       gridTemplateColumnStyle: computed(() => getColumnStyle()),
     });
 
-    function itemClicked(territory: IntersectionData): void {
-      emit('territory-clicked', territory);
+    function itemClicked(intersection: IntersectionData): void {
+      emit('intersection-clicked', intersection);
     }
 
     return {

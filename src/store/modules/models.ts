@@ -7,7 +7,7 @@ export interface RootState {}
 
 export interface GameState {
   players: PlayerData[];
-  territories: IntersectionData[];
+  intersections: IntersectionData[];
   currentPlayer?: PlayerData;
 }
 
@@ -18,12 +18,12 @@ export interface AppState extends RootState {
 export type AppStore = Store<AppState | {}>
 
 export interface StartGamePayload {
-  territories: IntersectionData[];
+  intersections: IntersectionData[];
   players: PlayerData[];
   currentPlayer: PlayerData;
 }
 
-export interface ClaimTerritoryPayload {
+export interface ClaimIntersectionPayload {
   nextPlayer: PlayerData;
-  territories: IntersectionData[];
+  intersections: IntersectionData[];
 }

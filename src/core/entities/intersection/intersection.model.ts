@@ -7,7 +7,7 @@ export interface IntersectionData {
     owner?: Player;
 }
 
-export interface AdjacentTerritories {
+export interface AdjacentIntersections {
     top?: IntersectionData;
     right?: IntersectionData;
     bottom?: IntersectionData;

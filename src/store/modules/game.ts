@@ -1,6 +1,6 @@
 import { ActionContext } from 'vuex';
 import {
-  AppStore, ClaimTerritoryPayload, GameState, StartGamePayload,
+  AppStore, ClaimIntersectionPayload, GameState, StartGamePayload,
 } from './models';
 import * as fromMutationTypes from './mutation-types';
 
@@ -14,12 +14,12 @@ export default {
   },
   mutations: {
     [fromMutationTypes.STAR_GAME](state: GameState, payload: StartGamePayload): void {
-      state.territories = payload.territories;
+      state.intersections = payload.intersections;
       state.players = payload.players;
       state.currentPlayer = payload.currentPlayer;
     },
-    [fromMutationTypes.CLAIM_TERRITORY](state: GameState, payload: ClaimTerritoryPayload): void {
-      state.territories = payload.territories;
+    [fromMutationTypes.CLAIM_TERRITORY](state: GameState, payload: ClaimIntersectionPayload): void {
+      state.intersections = payload.intersections;
       state.currentPlayer = payload.nextPlayer;
     },
   },
@@ -27,12 +27,12 @@ export default {
     startGame(this: AppStore, { commit }: ActionContext<GameState, {}>): void {
       commit(fromMutationTypes.STAR_GAME, this.$services.game.startGame());
     },
-    claimTerritory(this: AppStore,
+    claimIntersection(this: AppStore,
       { commit, state }: ActionContext<GameState, {}>,
       territoryId: number): void {
       const {
         currentPlayer,
-        territories,
+        intersections,
         players,
       } = JSON.parse(JSON.stringify(state)) as GameState;
 
@@ -40,19 +40,19 @@ export default {
 
       const playResult = this.$services.game.play(
         territoryId,
-        { territories, players, currentPlayer },
+        { intersections, players, currentPlayer },
       );
 
       if (playResult) {
         commit(fromMutationTypes.CLAIM_TERRITORY, {
-          territories: playResult.territories,
+          intersections: playResult.intersections,
           nextPlayer: playResult.nextPlayer,
         });
       }
     },
   },
   getters: {
-    territoryItems: (state: GameState) => state.territories,
+    territoryItems: (state: GameState) => state.intersections,
     players: (state: GameState) => state.players,
     currentPlayerName: (state: GameState) => state.currentPlayer?.name,
   },
