@@ -17,7 +17,6 @@ module.exports = {
     'linebreak-style': ['error', 'windows'],
     'import/prefer-default-export': 'off',
     'no-useless-constructor': 'off',
-    'no-param-reassign': 'off',
   },
   overrides: [
     {

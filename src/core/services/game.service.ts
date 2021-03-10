@@ -1,9 +1,8 @@
 import { Board } from '@/core/entities/board/board';
 import { BoardData } from '@/core/entities/board/board.data';
-import { PlayerData } from '@/core/entities/player';
 import { IntersectionData } from '@/core/entities/intersection';
+import { PlayerData } from '@/core/entities/player';
 import { TerritoryService } from './territory.service';
-import mockData from './tmpTerritories';
 
 export interface PlayResults {
   nextPlayer: PlayerData;
@@ -19,37 +18,31 @@ export class GameService {
 
     startGame = (): BoardData => {
       const players = this.generatePlayers();
-      // const intersections = this.generateIntersections();
-      const { intersections } = mockData;
+      const intersections = this.generateIntersections();
       const [currentPlayer] = players;
       return { intersections, players, currentPlayer };
     }
 
     play = (intersectionId: number, boardData: BoardData): PlayResults | undefined => {
       const board = new Board(boardData);
+      const intersection = board.intersections
+        .find((item) => item?.id === intersectionId && !item.owner) as IntersectionData;
+
+      if (!board.currentPlayer || !intersection) { return undefined; }
+
+      intersection.owner = board.currentPlayer;
+      const capturedIntersectionsIds = board.getCapturedIntersectionsIds(intersection);
+      if (capturedIntersectionsIds.length === 0) {
+        const isSuicidalMove = board.getIntersectionGroup(intersection).liberties === 0;
+        if (isSuicidalMove) { return undefined; }
+      }
+
+      board.liberateIntersectionsById(capturedIntersectionsIds);
+      const nextPlayer = this.getNextPlayer(board);
       return {
-        nextPlayer: board.currentPlayer,
-        intersections: this.territoryService.getTerritories(board),
+        nextPlayer,
+        intersections: board.intersections,
       };
-
-      // const intersection = board.intersections
-      //   .find((item) => item?.id === intersectionId && !item.owner) as IntersectionData;
-
-      // if (!board.currentPlayer || !intersection) { return undefined; }
-
-      // intersection.owner = board.currentPlayer;
-      // const capturedIntersectionsIds = board.getCapturedIntersectionsIds(intersection);
-      // if (capturedIntersectionsIds.length === 0) {
-      //   const isSuicidalMove = board.getIntersectionGroup(intersection).liberties === 0;
-      //   if (isSuicidalMove) { return undefined; }
-      // }
-
-      // board.liberateIntersectionsById(capturedIntersectionsIds);
-      // const nextPlayer = this.getNextPlayer(board);
-      // return {
-      //   nextPlayer,
-      //   intersections: board.intersections,
-      // };
     }
 
     private generatePlayers = (): PlayerData[] => Array.from(
