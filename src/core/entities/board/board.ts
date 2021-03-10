@@ -113,6 +113,6 @@ export class Board implements BoardData {
       return {
         liberties: count,
         intersections: visitedList,
-      };
+      } as IntersectionGroup;
     }
 }
