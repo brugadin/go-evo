@@ -1,11 +1,11 @@
 import { Board } from '@/core/entities/board/board';
 import { BoardData } from '@/core/entities/board/board.data';
 import { PlayerData } from '@/core/entities/player';
-import { TerritoryData } from '@/core/entities/territory';
+import { IntersectionData } from '@/core/entities/territory';
 
 export interface PlayResults {
   nextPlayer: PlayerData;
-  territories: TerritoryData[];
+  territories: IntersectionData[];
 }
 
 export class GameService {
@@ -24,7 +24,7 @@ export class GameService {
       const board = new Board(boardData);
 
       const territory = board.territories
-        .find((item) => item?.id === territoryId && !item.owner) as TerritoryData;
+        .find((item) => item?.id === territoryId && !item.owner) as IntersectionData;
 
       if (!board.currentPlayer || !territory) { return undefined; }
 
@@ -50,7 +50,7 @@ export class GameService {
       }),
     );
 
-    private generateTerritories = (): TerritoryData[] => Array.from(
+    private generateTerritories = (): IntersectionData[] => Array.from(
       Array(this.boardSize),
       (rowItem, rowNumber) => Array.from(Array(this.boardSize),
         (columnItem, columnNumber) => ({

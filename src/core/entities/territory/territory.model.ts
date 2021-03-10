@@ -1,6 +1,6 @@
 import { Player } from '@/core/entities/player';
 
-export interface TerritoryData {
+export interface IntersectionData {
     id: number;
     row: number;
     column: number;
@@ -8,8 +8,8 @@ export interface TerritoryData {
 }
 
 export interface AdjacentTerritories {
-    top?: TerritoryData;
-    right?: TerritoryData;
-    bottom?: TerritoryData;
-    left?: TerritoryData;
+    top?: IntersectionData;
+    right?: IntersectionData;
+    bottom?: IntersectionData;
+    left?: IntersectionData;
 }

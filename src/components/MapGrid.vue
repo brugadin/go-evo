@@ -1,37 +1,37 @@
 <template>
 <div class="grid" :style="gridTemplateColumnStyle">
-    <TerritoryItem
+    <IntersectionItem
       class="item"
       v-for="item in territoryItems"
       :key="item.id"
-      :territoryItem="item"
+      :intersectionItem="item"
       @itemClicked="itemClicked" />
 </div>
 </template>
 
 <script lang='ts'>
-import { TerritoryData } from '@/core/entities/territory';
+import { IntersectionData } from '@/core/entities/territory';
 import {
   computed, defineComponent, PropType, reactive, SetupContext, toRefs,
 } from 'vue';
-import TerritoryItem from './TerritoryItem.vue';
+import IntersectionItem from './IntersectionItem.vue';
 
 interface ComponentState {
   gridTemplateColumnStyle: string;
 }
 
 interface Props {
-  territoryItems: TerritoryData[];
+  territoryItems: IntersectionData[];
 }
 
 export default defineComponent({
   components: {
-    TerritoryItem,
+    IntersectionItem,
   },
   name: 'MapGrid',
   props: {
     territoryItems: {
-      type: Object as PropType<TerritoryData[]>,
+      type: Object as PropType<IntersectionData[]>,
       default: () => ([]),
     },
   },
@@ -47,7 +47,7 @@ export default defineComponent({
       gridTemplateColumnStyle: computed(() => getColumnStyle()),
     });
 
-    function itemClicked(territory: TerritoryData): void {
+    function itemClicked(territory: IntersectionData): void {
       emit('territory-clicked', territory);
     }
 

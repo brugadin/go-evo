@@ -1,8 +1,8 @@
 import { PlayerData } from '@/core/entities/player';
-import { TerritoryData } from '@/core/entities/territory';
+import { IntersectionData } from '@/core/entities/territory';
 
 export interface BoardData {
-    territories: TerritoryData[];
+    territories: IntersectionData[];
     players: PlayerData[];
     currentPlayer: PlayerData;
 }

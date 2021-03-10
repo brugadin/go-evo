@@ -1,7 +1,7 @@
 import { Player } from '../player';
-import { TerritoryData } from './territory.model';
+import { IntersectionData } from './territory.model';
 
-export class Territory implements TerritoryData {
+export class Territory implements IntersectionData {
     readonly id: number;
 
     readonly row: number;
@@ -10,7 +10,7 @@ export class Territory implements TerritoryData {
 
     readonly owner?: Player;
 
-    constructor(data: TerritoryData) {
+    constructor(data: IntersectionData) {
       this.id = data.id;
       this.row = data.row;
       this.column = data.column;

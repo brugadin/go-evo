@@ -8,13 +8,13 @@
 </template>
 
 <script lang='ts' >
-import { TerritoryData } from '@/core/entities/territory';
+import { IntersectionData } from '@/core/entities/territory';
 import {
   computed, defineComponent, PropType, reactive, SetupContext, toRefs,
 } from 'vue';
 
 interface Props {
-  territoryItem: TerritoryData;
+  intersectionItem: IntersectionData;
 }
 
 interface ComponentState {
@@ -23,18 +23,18 @@ interface ComponentState {
 }
 
 export default defineComponent({
-  name: 'TerritoryItem',
+  name: 'IntersectionItem',
   props: {
-    territoryItem: {
-      type: Object as PropType<TerritoryData>,
+    intersectionItem: {
+      type: Object as PropType<IntersectionData>,
       default: () => ({}),
     },
   },
   setup(props: Props, { emit }: SetupContext) {
-    const { territoryItem } = toRefs(props);
+    const { intersectionItem } = toRefs(props);
 
     function itemClicked(): void {
-      emit('item-clicked', territoryItem.value);
+      emit('item-clicked', intersectionItem.value);
     }
 
     function getBackgroundColorStyle(colorString: string | null) {
@@ -46,9 +46,9 @@ export default defineComponent({
     }
 
     const state: ComponentState = reactive({
-      shadowType: computed(() => (territoryItem.value.owner ? 'never' : 'always')),
+      shadowType: computed(() => (intersectionItem.value.owner ? 'never' : 'always')),
       backgroundColorStyle: computed(() => {
-        const { owner } = territoryItem.value;
+        const { owner } = intersectionItem.value;
         return getBackgroundColorStyle(owner?.color || null);
       }),
     });

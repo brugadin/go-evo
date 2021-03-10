@@ -1,5 +1,5 @@
 import { PlayerData } from '@/core/entities/player';
-import { TerritoryData } from '@/core/entities/territory';
+import { IntersectionData } from '@/core/entities/territory';
 import store from '@/store';
 
 function startGame(): void {
@@ -18,7 +18,7 @@ function getCurrentPlayerName(): string {
   return store.getters['game/currentPlayerName'];
 }
 
-function getTerritories(): TerritoryData[] {
+function getTerritories(): IntersectionData[] {
   return store.getters['game/territoryItems'];
 }
 

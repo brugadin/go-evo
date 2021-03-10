@@ -1,9 +1,9 @@
 import { PlayerData } from '../player';
-import { AdjacentTerritories, TerritoryData } from '../territory';
+import { AdjacentTerritories, IntersectionData } from '../territory';
 import { BoardData } from './board.data';
 
 export class Board implements BoardData {
-    readonly territories: TerritoryData[];
+    readonly territories: IntersectionData[];
 
     readonly players: PlayerData[];
 
@@ -18,12 +18,12 @@ export class Board implements BoardData {
     private getTerritoryByCoordinates = (
       row: number,
       column: number,
-    ): TerritoryData | undefined => this.territories.find(
-      (territory: TerritoryData) => territory.column === column && territory.row === row,
+    ): IntersectionData | undefined => this.territories.find(
+      (territory: IntersectionData) => territory.column === column && territory.row === row,
     );
 
     private getAdjacentTerritories = (
-      territory: TerritoryData,
+      territory: IntersectionData,
     ): AdjacentTerritories => ({
       top: this.getTerritoryByCoordinates(territory.row - 1, territory.column),
       left: this.getTerritoryByCoordinates(territory.row, territory.column - 1),
@@ -32,12 +32,14 @@ export class Board implements BoardData {
     } as AdjacentTerritories);
 
     private getAdjacentTerritoriesList = (
-      territory: TerritoryData,
-    ): TerritoryData[] => Object.values(this.getAdjacentTerritories(territory))
-      .filter((filterTerritory: TerritoryData | undefined) => !!filterTerritory) as TerritoryData[];
+      territory: IntersectionData,
+    ): IntersectionData[] => Object.values(this.getAdjacentTerritories(territory))
+      .filter(
+        (filterTerritory: IntersectionData | undefined) => !!filterTerritory,
+      ) as IntersectionData[];
 
-    liberateTerritoriesById = (liberatedTerritoriesIds: number[]): TerritoryData[] => {
-      const liberatedTerritories: TerritoryData[] = [];
+    liberateTerritoriesById = (liberatedTerritoriesIds: number[]): IntersectionData[] => {
+      const liberatedTerritories: IntersectionData[] = [];
       liberatedTerritoriesIds.forEach((id: number) => {
         const foundTerritory = this.territories.find((item) => id === item.id);
         if (foundTerritory) {
@@ -50,12 +52,12 @@ export class Board implements BoardData {
     }
 
     getCapturedTerritoriesIds(
-      territory: TerritoryData,
+      territory: IntersectionData,
     ): number[] {
       const neighbors = this.getAdjacentTerritoriesList(territory);
-      let capturedTerritories: TerritoryData[] = [];
+      let capturedTerritories: IntersectionData[] = [];
 
-      neighbors.forEach((neighborTerritory: TerritoryData) => {
+      neighbors.forEach((neighborTerritory: IntersectionData) => {
         const neighborOwner = neighborTerritory.owner;
         if (!!neighborOwner && neighborOwner.id !== territory.owner?.id) {
           const groupedItems = this.getGroup(neighborTerritory);
@@ -64,15 +66,15 @@ export class Board implements BoardData {
           }
         }
       });
-      return capturedTerritories.map((capturedTerritory: TerritoryData) => capturedTerritory.id);
+      return capturedTerritories.map((capturedTerritory: IntersectionData) => capturedTerritory.id);
     }
 
     getGroup = (
-      territory: TerritoryData,
-    ): { liberties: number; territories: TerritoryData[]} => {
-      const visited: TerritoryData[] = [];
-      const visitedList: TerritoryData[] = [];
-      const queue: TerritoryData[] = [territory];
+      territory: IntersectionData,
+    ): { liberties: number; territories: IntersectionData[]} => {
+      const visited: IntersectionData[] = [];
+      const visitedList: IntersectionData[] = [];
+      const queue: IntersectionData[] = [territory];
       let count = 0;
       const ownerId = territory.owner?.id;
 
@@ -86,8 +88,8 @@ export class Board implements BoardData {
         if (hasVisited) { continue; }
 
         const neighbors = this.getAdjacentTerritoriesList(currentTerritory);
-        count += neighbors.filter((neighbor: TerritoryData) => !neighbor.owner).length;
-        neighbors.forEach((neighbor: TerritoryData) => {
+        count += neighbors.filter((neighbor: IntersectionData) => !neighbor.owner).length;
+        neighbors.forEach((neighbor: IntersectionData) => {
           if (neighbor.owner?.id === ownerId) { queue.push(neighbor); }
         });
 
