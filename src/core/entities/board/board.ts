@@ -85,7 +85,6 @@ export class Board implements BoardData {
     getIntersectionGroup(
       intersection: IntersectionData,
     ): IntersectionGroup {
-      const visited: IntersectionData[] = [];
       const visitedList: IntersectionData[] = [];
       const queue: IntersectionData[] = [intersection];
       let count = 0;
@@ -94,7 +93,7 @@ export class Board implements BoardData {
       while (queue.length > 0) {
         // eslint-disable-next-line
         const currentIntersection = queue.pop()!;
-        const hasVisited = visited.find(
+        const hasVisited = visitedList.find(
           (visitedIntersection) => visitedIntersection.id === currentIntersection?.id,
         );
         // eslint-disable-next-line
@@ -106,7 +105,6 @@ export class Board implements BoardData {
           if (neighbor.owner?.id === ownerId) { queue.push(neighbor); }
         });
 
-        visited.push(currentIntersection);
         visitedList.push(currentIntersection);
       }
 
