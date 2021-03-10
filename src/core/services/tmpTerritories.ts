@@ -301,26 +301,56 @@ export default {
       id: 59,
       column: 2,
       row: 3,
+      owner: {
+        id: 0,
+        name: 'Player 1',
+        score: 0,
+        color: 'black',
+      },
     },
     {
       id: 60,
       column: 3,
       row: 3,
+      owner: {
+        id: 0,
+        name: 'Player 1',
+        score: 0,
+        color: 'black',
+      },
     },
     {
       id: 61,
       column: 4,
       row: 3,
+      owner: {
+        id: 0,
+        name: 'Player 1',
+        score: 0,
+        color: 'black',
+      },
     },
     {
       id: 62,
       column: 5,
       row: 3,
+      owner: {
+        id: 0,
+        name: 'Player 1',
+        score: 0,
+        color: 'black',
+      },
     },
     {
       id: 63,
       column: 6,
       row: 3,
+      owner: {
+        id: 0,
+        name: 'Player 1',
+        score: 0,
+        color: 'black',
+      },
     },
     {
       id: 64,
@@ -396,39 +426,27 @@ export default {
       id: 78,
       column: 2,
       row: 4,
+      owner: {
+        id: 0,
+        name: 'Player 1',
+        score: 0,
+        color: 'black',
+      },
     },
     {
       id: 79,
       column: 3,
       row: 4,
-      owner: {
-        id: 0,
-        name: 'Player 1',
-        score: 0,
-        color: 'black',
-      },
     },
     {
       id: 80,
       column: 4,
       row: 4,
-      owner: {
-        id: 0,
-        name: 'Player 1',
-        score: 0,
-        color: 'black',
-      },
     },
     {
       id: 81,
       column: 5,
       row: 4,
-      owner: {
-        id: 0,
-        name: 'Player 1',
-        score: 0,
-        color: 'black',
-      },
     },
     {
       id: 82,
@@ -515,17 +533,17 @@ export default {
       id: 97,
       column: 2,
       row: 5,
-    },
-    {
-      id: 98,
-      column: 3,
-      row: 5,
       owner: {
         id: 0,
         name: 'Player 1',
         score: 0,
         color: 'black',
       },
+    },
+    {
+      id: 98,
+      column: 3,
+      row: 5,
     },
     {
       id: 99,
@@ -628,17 +646,17 @@ export default {
       id: 116,
       column: 2,
       row: 6,
-    },
-    {
-      id: 117,
-      column: 3,
-      row: 6,
       owner: {
         id: 0,
         name: 'Player 1',
         score: 0,
         color: 'black',
       },
+    },
+    {
+      id: 117,
+      column: 3,
+      row: 6,
     },
     {
       id: 118,
@@ -735,6 +753,12 @@ export default {
       id: 135,
       column: 2,
       row: 7,
+      owner: {
+        id: 0,
+        name: 'Player 1',
+        score: 0,
+        color: 'black',
+      },
     },
     {
       id: 136,

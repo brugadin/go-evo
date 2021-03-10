@@ -27,8 +27,11 @@ export class GameService {
 
     play = (intersectionId: number, boardData: BoardData): PlayResults | undefined => {
       const board = new Board(boardData);
-      this.territoryService.getTerritories(board);
-      return undefined;
+      return {
+        nextPlayer: board.currentPlayer,
+        intersections: this.territoryService.getTerritories(board),
+      };
+
       // const intersection = board.intersections
       //   .find((item) => item?.id === intersectionId && !item.owner) as IntersectionData;
 

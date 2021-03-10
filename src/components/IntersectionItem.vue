@@ -4,7 +4,6 @@
     :shadow="shadowType"
     :body-style="backgroundColorStyle"
     class="grid-item" >
-    {{intersectionItem.id}}
   </el-card>
 </template>
 

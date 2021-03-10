@@ -1,116 +1,86 @@
+import { Player } from '@/core/entities/player/player';
+import { PlayerColor } from '@/core/entities/player';
 import { IntersectionData, IntersectionGroup } from '@/core/entities/intersection';
 import { Board } from '@/core/entities/board';
 
+// TODO: Move to territory model
+type TerritoryOwner = PlayerColor | 'unknown' | 'neutral';
+export interface Territory {
+  intersections: IntersectionData[];
+  owner: TerritoryOwner;
+}
+
 export class TerritoryService {
-    getTerritories = (board: Board): void => {
-      const ownedGroups = this.getAllGroups(board);
-      console.log(ownedGroups);
-      this.getAllTerritoriesGroup(board, ownedGroups);
+    getTerritories = (board: Board): IntersectionData[] => {
+      const territories: IntersectionData[] = [];
+      const testResults: Territory[] = [];
+      board.intersections.forEach((intersection: IntersectionData) => {
+        const resultTerritory = this.generateTerritory(intersection, board);
+        testResults.push(resultTerritory);
+        territories.push({
+          id: intersection.id,
+          row: intersection.row,
+          column: intersection.column,
+          owner: board.players
+            .find((player: Player) => player.color === resultTerritory.owner)
+          || undefined,
+        });
+      });
+      console.log(testResults);
+      return territories;
     }
 
-    private getAllTerritoriesGroup(board: Board, ownedGroups: IntersectionGroup[]): void {
-      let blackPoints = 0;
-      board.intersections.forEach((intersection: IntersectionData) => {
-        if (!this.isIntersectionInGroups(intersection, ownedGroups)) {
-          let rightTerritory = board.getAdjacentIntersections(intersection).right;
-          let groupIndex = -1;
-          while (rightTerritory && groupIndex === -1) {
-            groupIndex = this.groupIndexOf(rightTerritory, ownedGroups);
-            if (groupIndex !== -1) {
-              const isInside = this.isInsideInterceptionGroup(
-                intersection,
-                ownedGroups[groupIndex].intersections,
-                board,
-              );
+    generateTerritory(
+      intersection: IntersectionData,
+      board: Board,
+      territory?: Territory,
+    ): Territory {
+      if (intersection.owner) {
+        const { intersections } = board.getIntersectionGroup(intersection);
+        return {
+          intersections,
+          owner: intersection.owner.color,
+        };
+      }
 
-              if (isInside) {
-                blackPoints += 1;
-                console.log('intersection', intersection);
-              }
-              blackPoints = isInside ? blackPoints += 1 : blackPoints;
-            }
+      let isRoot = false;
+      if (!territory) {
+        territory = {
+          intersections: [],
+          owner: 'unknown',
+        };
 
-            rightTerritory = board.getAdjacentIntersections(rightTerritory).right;
+        isRoot = true;
+      }
+
+      territory.intersections.push(intersection);
+
+      const neighbors = board.getAdjacentIntersectionsList(intersection);
+      // TODO: Reduce complexity here
+      neighbors.forEach((neighbor: IntersectionData) => {
+        if (!neighbor.owner) {
+          if (!this.isIntersectionInTerritory(neighbor, territory!)) {
+            this.generateTerritory(neighbor, board, territory);
+          }
+        } else if (territory!.owner !== 'neutral') {
+          if (territory!.owner === 'unknown') {
+              territory!.owner = neighbor.owner.color;
+          } else if (territory!.owner !== neighbor.owner.color) {
+              territory!.owner = 'neutral';
           }
         }
       });
 
-      console.log('leaving getAllTerritoriesGroup', blackPoints);
-    }
-
-    // getCapturedIntersectionsIds(
-    //   intersection: IntersectionData,
-    // ): number[] {
-    //   const neighbors = this.getAdjacentIntersectionsList(intersection);
-    //   let capturedIntersections: IntersectionData[] = [];
-
-    //   neighbors.forEach((neighborIntersection: IntersectionData) => {
-    //     const neighborOwner = neighborIntersection.owner;
-    //     if (!!neighborOwner && neighborOwner.id !== intersection.owner?.id) {
-    //       const groupedItems = this.getIntersectionGroup(neighborIntersection);
-    //       if (groupedItems.liberties === 0) {
-    //         capturedIntersections = capturedIntersections.concat(groupedItems.intersections);
-    //       }
-    //     }
-    //   });
-    //   return capturedIntersections
-    //     .map((capturedIntersection: IntersectionData) => capturedIntersection.id);
-    // }
-
-    private getAllGroups(board: Board): IntersectionGroup[] {
-      const intersectionGroups: IntersectionGroup[] = [];
-      const ownedIntersections = this.getOwnedIntersections(board.intersections);
-      ownedIntersections.forEach((intersection: IntersectionData) => {
-        if (!this.isIntersectionInGroups(intersection, intersectionGroups)) {
-          const intersectionGroupData = board.getIntersectionGroup(intersection);
-          intersectionGroups.push(new IntersectionGroup(intersectionGroupData));
-        }
-      });
-
-      return intersectionGroups;
-    }
-
-    private getOwnedIntersections = (
-      intersections: IntersectionData[],
-    ): IntersectionData[] => (intersections
-      .filter((intersection: IntersectionData) => intersection.owner))
-
-    private isIntersectionInGroups = (
-      intersection: IntersectionData,
-      intersectionGroups: IntersectionGroup[],
-    ): boolean => (intersectionGroups
-      .some((group: IntersectionGroup) => group.isIntersectionInGroup(intersection)))
-
-      private groupIndexOf = (
-        intersection: IntersectionData,
-        intersectionGroups: IntersectionGroup[],
-      ): number => (intersectionGroups
-        .findIndex((group: IntersectionGroup) => group.isIntersectionInGroup(intersection)))
-
-    private isInsideInterceptionGroup = (
-      intersection: IntersectionData,
-      intersectionGroup: IntersectionData[],
-      board: Board,
-    ): boolean => {
-      let rightTerritory = board.getAdjacentIntersections(intersection).right;
-      let intersectionFound = 0;
-      let isSameBorder = false;
-      while (rightTerritory) {
-        const foundBorder = intersectionGroup
-          .find(
-            // eslint-disable-next-line
-              (perimeterTerritory: IntersectionData) => perimeterTerritory.id === rightTerritory?.id
-          );
-
-        if (foundBorder && !isSameBorder) {
-          intersectionFound += 1;
-          isSameBorder = true;
-        } else if (!foundBorder && isSameBorder) {
-          isSameBorder = false;
-        }
-
-        rightTerritory = board.getAdjacentIntersections(rightTerritory).right;
+      if (isRoot && territory.owner === 'unknown') {
+        territory.owner = 'neutral';
       }
-      return intersectionFound !== 0 && intersectionFound % 2 !== 0;
+
+      return territory;
     }
+
+    // TODO: Move to territory class
+    isIntersectionInTerritory = (
+      intersection: IntersectionData,
+      territory: Territory,
+    ): boolean => territory.intersections.findIndex((item) => item.id === intersection.id) !== -1
 }
