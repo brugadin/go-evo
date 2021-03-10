@@ -1,7 +1,7 @@
 import { Board } from '@/core/entities/board/board';
 import { BoardData } from '@/core/entities/board/board.data';
 import { PlayerData } from '@/core/entities/player';
-import { IntersectionData } from '@/core/entities/territory';
+import { IntersectionData } from '@/core/entities/intersection';
 
 export interface PlayResults {
   nextPlayer: PlayerData;

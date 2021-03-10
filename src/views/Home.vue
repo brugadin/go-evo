@@ -18,7 +18,7 @@
 import MapGrid from '@/components/MapGrid.vue';
 import Players from '@/components/Players.vue';
 import { PlayerData } from '@/core/entities/player';
-import { IntersectionData } from '@/core/entities/territory';
+import { IntersectionData } from '@/core/entities/intersection';
 import {
   computed, defineComponent, onMounted, reactive, toRefs,
 } from 'vue';

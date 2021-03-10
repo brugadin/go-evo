@@ -10,7 +10,7 @@
 </template>
 
 <script lang='ts'>
-import { IntersectionData } from '@/core/entities/territory';
+import { IntersectionData } from '@/core/entities/intersection';
 import {
   computed, defineComponent, PropType, reactive, SetupContext, toRefs,
 } from 'vue';

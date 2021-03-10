@@ -1,5 +1,5 @@
 import { PlayerData } from '../player';
-import { AdjacentTerritories, IntersectionData } from '../territory';
+import { AdjacentTerritories, IntersectionData } from '../intersection';
 import { BoardData } from './board.data';
 
 export class Board implements BoardData {
