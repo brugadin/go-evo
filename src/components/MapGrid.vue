@@ -5,9 +5,11 @@
     v-for="item in intersectionItems"
     :key="item.id"
     >
-  <IntersectionItem
-      :intersectionItem="item"
-      @itemClicked="itemClicked" />
+    <GridCellSurface>
+      <IntersectionItem
+          :intersectionItem="item"
+          @itemClicked="itemClicked" />
+    </GridCellSurface>
   </div>
 
 </div>
@@ -19,6 +21,7 @@ import {
   computed, defineComponent, PropType, reactive, SetupContext, toRefs,
 } from 'vue';
 import IntersectionItem from './IntersectionItem.vue';
+import GridCellSurface from './GridCellSurface.vue';
 
 interface ComponentState {
   gridTemplateColumnStyle: string;
@@ -33,6 +36,7 @@ interface Props {
 export default defineComponent({
   components: {
     IntersectionItem,
+    GridCellSurface,
   },
   name: 'MapGrid',
   props: {
