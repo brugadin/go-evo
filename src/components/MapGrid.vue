@@ -1,11 +1,15 @@
 <template>
 <div class="grid" :style="gridTemplateColumnStyle">
-    <IntersectionItem
-      class="item"
-      v-for="item in intersectionItems"
-      :key="item.id"
+  <div
+    class="item"
+    v-for="item in intersectionItems"
+    :key="item.id"
+    >
+  <IntersectionItem
       :intersectionItem="item"
       @itemClicked="itemClicked" />
+  </div>
+
 </div>
 </template>
 
@@ -60,10 +64,15 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '@/element-variables.scss';
 
 .grid {
     display: grid;
     align-items: start;
-    grid-gap: 5px;
+}
+.item {
+  background-image: url($--grid-cross-path);
+  height: 30px;
+  width: 30px;
 }
 </style>

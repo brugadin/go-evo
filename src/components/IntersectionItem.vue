@@ -1,10 +1,13 @@
 <template>
-  <el-card
-    @click="itemClicked"
-    :shadow="shadowType"
-    :body-style="backgroundColorStyle"
-    class="grid-item" >
-  </el-card>
+  <div
+  @click="itemClicked"
+  class="grid-item">
+    <el-card
+      v-show="intersectionItem.owner"
+      :shadow="shadowType"
+      :body-style="backgroundColorStyle" >
+    </el-card>
+  </div>
 </template>
 
 <script lang='ts' >
@@ -73,6 +76,7 @@ export default defineComponent({
 
 ::v-deep(.el-card) {
   border-radius: 15px;
+  border-color: $--color-black;
 }
 
 ::v-deep(.el-card__body) {
