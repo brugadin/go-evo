@@ -1,7 +1,7 @@
 <template>
 <div class="grid" :style="gridTemplateColumnStyle">
   <div
-    :class="'item ' + getGridClassModifier(item.id)"
+    :class="'item ' + getGridClassModifier(item)"
     v-for="item in intersectionItems"
     :key="item.id"
     >
@@ -71,9 +71,17 @@ export default defineComponent({
       emit('intersection-clicked', intersection);
     }
 
-    function getGridClassModifier(intesectionId: number): string {
-      console.log(state.cornerIdMaps.get(intesectionId));
-      return state.cornerIdMaps.get(intesectionId) || '';
+    function getGridClassModifier(intersection: IntersectionData): string {
+      let classModifierName = '';
+      classModifierName = state.cornerIdMaps.get(intersection.id) || '';
+      if (!classModifierName) {
+        if (intersection.row === 0) { return 'top'; }
+        if (intersection.column === 0) { return 'left'; }
+        if (intersection.row === (state.gridColumns - 1)) { return 'bottom'; }
+        if (intersection.column === (state.gridColumns - 1)) { return 'right'; }
+      }
+
+      return classModifierName;
     }
 
     return {
@@ -99,6 +107,22 @@ export default defineComponent({
 
   &.top-left {
     background-image: url($--grid-upper-left-path);
+  }
+
+  &.top {
+    background-image: url($--grid-top-path);
+  }
+
+  &.left {
+    background-image: url($--grid-left-path);
+  }
+
+  &.bottom {
+    background-image: url($--grid-bottom-path);
+  }
+
+  &.right {
+    background-image: url($--grid-right-path);
   }
 
   &.top-right {

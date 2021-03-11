@@ -4,7 +4,6 @@
   class="grid-item">
     <el-card
       v-show="intersectionItem.owner"
-      :shadow="shadowType"
       :body-style="backgroundColorStyle" >
     </el-card>
   </div>
@@ -21,7 +20,6 @@ interface Props {
 }
 
 interface ComponentState {
-  shadowType: string;
   backgroundColorStyle: string | null;
 }
 
@@ -50,7 +48,6 @@ export default defineComponent({
     }
 
     const state: ComponentState = reactive({
-      shadowType: computed(() => (intersectionItem.value.owner ? 'never' : 'always')),
       backgroundColorStyle: computed(() => {
         const { owner } = intersectionItem.value;
         return getBackgroundColorStyle(owner?.color || null);
