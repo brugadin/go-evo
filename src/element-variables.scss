@@ -10,16 +10,5 @@ $--color-board: #DCB35C;
 /* icon font path, required */
 $--font-path: '~element-plus/lib/theme-chalk/fonts';
 $--font-size: 14px;
-$--grid-cross-path: '~@/assets/grid/cross.png';
-
-
-$--grid-top-path: '~@/assets/grid/top.png';
-$--grid-left-path: '~@/assets/grid/left.png';
-$--grid-bottom-path: '~@/assets/grid/bottom.png';
-$--grid-right-path: '~@/assets/grid/right.png';
-$--grid-upper-left-path: '~@/assets/grid/upper-left.png';
-$--grid-upper-right-path: '~@/assets/grid/upper-right.png';
-$--grid-bottom-left-path: '~@/assets/grid/bottom-left.png';
-$--grid-bottom-right-path: '~@/assets/grid/bottom-right.png';
 
 @import "~element-plus/packages/theme-chalk/src/index";

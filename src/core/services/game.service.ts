@@ -41,7 +41,7 @@ export class GameService {
       const nextPlayer = this.getNextPlayer(board);
       return {
         nextPlayer,
-        intersections: board.intersections,
+        intersections: this.territoryService.getTerritories(board),
       };
     }
 

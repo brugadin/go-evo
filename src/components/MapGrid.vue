@@ -1,11 +1,13 @@
 <template>
 <div class="grid" :style="gridTemplateColumnStyle">
   <div
-    :class="'item ' + getGridClassModifier(item)"
+    class="item"
     v-for="item in intersectionItems"
     :key="item.id"
     >
-    <GridCellSurface>
+    <GridCellSurface
+    :cellType="getGridCellType(item)"
+    :territoryColor="item.territoryOwner">
       <IntersectionItem
           :intersectionItem="item"
           @itemClicked="itemClicked" />
@@ -75,7 +77,7 @@ export default defineComponent({
       emit('intersection-clicked', intersection);
     }
 
-    function getGridClassModifier(intersection: IntersectionData): string {
+    function getGridCellType(intersection: IntersectionData): string {
       let classModifierName = '';
       classModifierName = state.cornerIdMaps.get(intersection.id) || '';
       if (!classModifierName) {
@@ -91,54 +93,19 @@ export default defineComponent({
     return {
       ...toRefs(state),
       itemClicked,
-      getGridClassModifier,
+      getGridCellType,
     };
   },
 });
 </script>
 
 <style lang="scss" scoped>
-@import '@/element-variables.scss';
-
 .grid {
     display: grid;
     align-items: start;
 }
 .item {
-  background-image: url($--grid-cross-path);
   height: 30px;
   width: 30px;
-
-  &.top-left {
-    background-image: url($--grid-upper-left-path);
-  }
-
-  &.top {
-    background-image: url($--grid-top-path);
-  }
-
-  &.left {
-    background-image: url($--grid-left-path);
-  }
-
-  &.bottom {
-    background-image: url($--grid-bottom-path);
-  }
-
-  &.right {
-    background-image: url($--grid-right-path);
-  }
-
-  &.top-right {
-    background-image: url($--grid-upper-right-path);
-  }
-
-  &.bottom-left {
-    background-image: url($--grid-bottom-left-path);
-  }
-
-  &.bottom-right {
-    background-image: url($--grid-bottom-right-path);
-  }
 }
 </style>

@@ -5,6 +5,7 @@ export interface IntersectionData {
     row: number;
     column: number;
     owner?: Player;
+    territoryOwner?: string;
 }
 
 export interface AdjacentIntersections {

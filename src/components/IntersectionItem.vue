@@ -35,7 +35,6 @@ export default defineComponent({
     const { intersectionItem } = toRefs(props);
 
     function itemClicked(): void {
-      console.log(intersectionItem.value);
       emit('item-clicked', intersectionItem.value);
     }
 

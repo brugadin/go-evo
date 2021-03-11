@@ -13,9 +13,8 @@ export class TerritoryService {
           id: intersection.id,
           row: intersection.row,
           column: intersection.column,
-          owner: board.players
-            .find((player: Player) => player.color === resultTerritory.owner)
-          || undefined,
+          owner: intersection.owner,
+          territoryOwner: resultTerritory.owner,
         });
       });
       return territories;

@@ -22,8 +22,8 @@ export default defineComponent({
       default: () => ([]),
     },
     currentPlayerName: {
-      type: Object as PropType<string>,
-      default: () => ({}),
+      type: String as PropType<string>,
+      default: () => (''),
     },
   },
 });
