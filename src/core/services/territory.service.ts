@@ -21,7 +21,7 @@ export class TerritoryService {
       return territories;
     }
 
-    generateTerritory(
+    private generateTerritory(
       intersection: IntersectionData,
       board: Board,
       territory?: Territory,
