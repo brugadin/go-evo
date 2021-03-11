@@ -12,4 +12,9 @@ $--font-path: '~element-plus/lib/theme-chalk/fonts';
 $--font-size: 14px;
 $--grid-cross-path: '~@/assets/grid/cross.png';
 
+$--grid-upper-left-path: '~@/assets/grid/upper-left-corner.svg.png';
+$--grid-upper-right-path: '~@/assets/grid/upper-right-corner.svg.png';
+$--grid-bottom-left-path: '~@/assets/grid/bottom-left-corner.svg.png';
+$--grid-bottom-right-path: '~@/assets/grid/bottom-right-corner.svg.png';
+
 @import "~element-plus/packages/theme-chalk/src/index";

@@ -37,6 +37,7 @@ export default defineComponent({
     const { intersectionItem } = toRefs(props);
 
     function itemClicked(): void {
+      console.log(intersectionItem.value);
       emit('item-clicked', intersectionItem.value);
     }
 
@@ -71,7 +72,7 @@ export default defineComponent({
   width: 30px;
   height: 30px;
   cursor: pointer;
-  font-size: $--font-size;
+  font-size: 7px;
 }
 
 ::v-deep(.el-card) {
