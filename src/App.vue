@@ -1,14 +1,14 @@
 <template>
+<el-alert
+  v-if="isProd"
+  title="pre-alpha release"
+  type="warning"
+  :closable="false"
+  show-icon
+  center>
+</el-alert>
   <div class="main-content">
     <div class="main-container">
-      <el-alert
-        class="pre-alpha-alert"
-        v-if="isProd"
-        title="pre-alpha release"
-        type="warning"
-        :closable="false"
-        show-icon>
-      </el-alert>
       <el-container>
           <router-view/>
       </el-container>
@@ -31,11 +31,6 @@ export default defineComponent({
 <style scoped>
 .main-container {
   min-width: 640px;
-}
-
-.pre-alpha-alert {
-  max-width: 570px;
-  margin: 0 20px;
 }
 
 @media screen and (min-width: 641px) {

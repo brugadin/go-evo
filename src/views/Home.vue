@@ -65,24 +65,15 @@ export default defineComponent({
 <style lang="scss" scoped>
 .main-content {
   padding: 20px;
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: 600px) {
     padding: 20px 0;
-    min-width: 640px;
   }
 }
 
 ::v-deep(.el-footer) {
-  @media screen and (max-width: 640px) {
-    padding: 20px 0;
-    min-width: 640px;
-  }
-}
-
-@media screen and (max-width: 640px) {
-  .main-content {
+  @media screen and (max-width: 600px) {
     padding: 20px 0;
   }
-
 }
 
 </style>
