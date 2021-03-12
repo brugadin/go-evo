@@ -1,10 +1,12 @@
 <template>
 <el-card class="container">
-  <template #header>Current Player</template>
+  <template #header>
+    <div class="current-player-header">Current Player</div>
+  </template>
   <div
     :style="'color: ' + currentPlayer?.color "
     class="text">
-    {{ currentPlayer?.name }}
+    <strong>{{ currentPlayer?.name }}</strong>
   </div>
 </el-card>
 <el-card class="container">
@@ -48,5 +50,11 @@ export default defineComponent({
 .container {
   margin-bottom: 15px;
 }
+
+.current-player-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
 
 </style>
