@@ -26,11 +26,11 @@ export class GameService {
     play = (intersectionId: number, boardData: BoardData): PlayResults | undefined => {
       const board = new Board(boardData);
       const intersection = board.intersections
-        .find((item) => item?.id === intersectionId && !item.owner) as IntersectionData;
+        .find((item) => item?.id === intersectionId && !item.stoneOwner) as IntersectionData;
 
       if (!board.currentPlayer || !intersection) { return undefined; }
 
-      intersection.owner = board.currentPlayer;
+      intersection.stoneOwner = board.currentPlayer;
       const capturedIntersectionsIds = board.getCapturedIntersectionsIds(intersection);
       if (capturedIntersectionsIds.length === 0) {
         const isSuicidalMove = board.getIntersectionGroup(intersection).liberties === 0;
@@ -41,7 +41,7 @@ export class GameService {
       const nextPlayer = this.getNextPlayer(board);
       return {
         nextPlayer,
-        intersections: board.intersections,
+        intersections: this.territoryService.getTerritories(board),
       };
     }
 

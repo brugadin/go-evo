@@ -3,14 +3,14 @@ import { IntersectionData } from '@/core/entities/intersection';
 import { TerritoryData, TerritoryOwner } from './territory.model';
 
 export class Territory implements TerritoryData {
-    readonly intersections: IntersectionData[];
+    readonly linkedIntersectionsIds: number[];
 
     private _owner: TerritoryOwner;
 
     isRoot = false;
 
     constructor(data: TerritoryData) {
-      this.intersections = data.intersections;
+      this.linkedIntersectionsIds = data.linkedIntersectionsIds;
       this._owner = data.owner;
     }
 
@@ -30,5 +30,6 @@ export class Territory implements TerritoryData {
 
     isInTerritory = (
       intersection: IntersectionData,
-    ): boolean => this.intersections.findIndex((item) => item.id === intersection.id) !== -1
+    ): boolean => this.linkedIntersectionsIds
+      .findIndex((id) => id === intersection.id) !== -1
 }

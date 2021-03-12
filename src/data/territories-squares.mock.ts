@@ -301,7 +301,7 @@ export default {
       id: 59,
       column: 2,
       row: 3,
-      owner: {
+      stoneOwner: {
         id: 0,
         name: 'Player 1',
         score: 0,
@@ -312,7 +312,7 @@ export default {
       id: 60,
       column: 3,
       row: 3,
-      owner: {
+      stoneOwner: {
         id: 0,
         name: 'Player 1',
         score: 0,
@@ -323,7 +323,7 @@ export default {
       id: 61,
       column: 4,
       row: 3,
-      owner: {
+      stoneOwner: {
         id: 0,
         name: 'Player 1',
         score: 0,
@@ -334,7 +334,7 @@ export default {
       id: 62,
       column: 5,
       row: 3,
-      owner: {
+      stoneOwner: {
         id: 0,
         name: 'Player 1',
         score: 0,
@@ -345,7 +345,7 @@ export default {
       id: 63,
       column: 6,
       row: 3,
-      owner: {
+      stoneOwner: {
         id: 0,
         name: 'Player 1',
         score: 0,
@@ -426,7 +426,7 @@ export default {
       id: 78,
       column: 2,
       row: 4,
-      owner: {
+      stoneOwner: {
         id: 0,
         name: 'Player 1',
         score: 0,
@@ -452,7 +452,7 @@ export default {
       id: 82,
       column: 6,
       row: 4,
-      owner: {
+      stoneOwner: {
         id: 0,
         name: 'Player 1',
         score: 0,
@@ -533,7 +533,7 @@ export default {
       id: 97,
       column: 2,
       row: 5,
-      owner: {
+      stoneOwner: {
         id: 0,
         name: 'Player 1',
         score: 0,
@@ -559,7 +559,7 @@ export default {
       id: 101,
       column: 6,
       row: 5,
-      owner: {
+      stoneOwner: {
         id: 0,
         name: 'Player 1',
         score: 0,
@@ -640,7 +640,7 @@ export default {
       id: 116,
       column: 2,
       row: 6,
-      owner: {
+      stoneOwner: {
         id: 0,
         name: 'Player 1',
         score: 0,
@@ -666,7 +666,7 @@ export default {
       id: 120,
       column: 6,
       row: 6,
-      owner: {
+      stoneOwner: {
         id: 0,
         name: 'Player 1',
         score: 0,
@@ -747,7 +747,7 @@ export default {
       id: 135,
       column: 2,
       row: 7,
-      owner: {
+      stoneOwner: {
         id: 0,
         name: 'Player 1',
         score: 0,
@@ -758,7 +758,7 @@ export default {
       id: 136,
       column: 3,
       row: 7,
-      owner: {
+      stoneOwner: {
         id: 0,
         name: 'Player 1',
         score: 0,
@@ -769,7 +769,7 @@ export default {
       id: 137,
       column: 4,
       row: 7,
-      owner: {
+      stoneOwner: {
         id: 0,
         name: 'Player 1',
         score: 0,
@@ -780,7 +780,7 @@ export default {
       id: 138,
       column: 5,
       row: 7,
-      owner: {
+      stoneOwner: {
         id: 0,
         name: 'Player 1',
         score: 0,
@@ -791,7 +791,7 @@ export default {
       id: 139,
       column: 6,
       row: 7,
-      owner: {
+      stoneOwner: {
         id: 0,
         name: 'Player 1',
         score: 0,
@@ -1487,7 +1487,7 @@ export default {
       id: 277,
       column: 11,
       row: 14,
-      owner: {
+      stoneOwner: {
         id: 1,
         name: 'Player 2',
         score: 0,
@@ -1498,7 +1498,7 @@ export default {
       id: 278,
       column: 12,
       row: 14,
-      owner: {
+      stoneOwner: {
         id: 1,
         name: 'Player 2',
         score: 0,
@@ -1509,7 +1509,7 @@ export default {
       id: 279,
       column: 13,
       row: 14,
-      owner: {
+      stoneOwner: {
         id: 1,
         name: 'Player 2',
         score: 0,
@@ -1520,7 +1520,7 @@ export default {
       id: 280,
       column: 14,
       row: 14,
-      owner: {
+      stoneOwner: {
         id: 1,
         name: 'Player 2',
         score: 0,
@@ -1606,7 +1606,7 @@ export default {
       id: 296,
       column: 11,
       row: 15,
-      owner: {
+      stoneOwner: {
         id: 1,
         name: 'Player 2',
         score: 0,
@@ -1627,7 +1627,7 @@ export default {
       id: 299,
       column: 14,
       row: 15,
-      owner: {
+      stoneOwner: {
         id: 1,
         name: 'Player 2',
         score: 0,
@@ -1713,7 +1713,7 @@ export default {
       id: 315,
       column: 11,
       row: 16,
-      owner: {
+      stoneOwner: {
         id: 1,
         name: 'Player 2',
         score: 0,
@@ -1734,7 +1734,7 @@ export default {
       id: 318,
       column: 14,
       row: 16,
-      owner: {
+      stoneOwner: {
         id: 1,
         name: 'Player 2',
         score: 0,
@@ -1820,7 +1820,7 @@ export default {
       id: 334,
       column: 11,
       row: 17,
-      owner: {
+      stoneOwner: {
         id: 1,
         name: 'Player 2',
         score: 0,
@@ -1831,7 +1831,7 @@ export default {
       id: 335,
       column: 12,
       row: 17,
-      owner: {
+      stoneOwner: {
         id: 1,
         name: 'Player 2',
         score: 0,
@@ -1842,7 +1842,7 @@ export default {
       id: 336,
       column: 13,
       row: 17,
-      owner: {
+      stoneOwner: {
         id: 1,
         name: 'Player 2',
         score: 0,
@@ -1853,7 +1853,7 @@ export default {
       id: 337,
       column: 14,
       row: 17,
-      owner: {
+      stoneOwner: {
         id: 1,
         name: 'Player 2',
         score: 0,
