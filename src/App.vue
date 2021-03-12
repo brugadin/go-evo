@@ -1,5 +1,6 @@
 <template>
 <el-alert
+  class="pre-alpha-alert"
   v-if="isProd"
   title="pre-alpha release"
   type="warning"
@@ -21,7 +22,7 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'App',
   setup() {
-    const isProd = process.env.NODE_ENV === 'production';
+    const isProd = process.env.NODE_ENV !== 'production';
     return {
       isProd,
     };
@@ -29,7 +30,8 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.main-container {
+
+.main-container, .pre-alpha-alert {
   min-width: 640px;
 }
 
