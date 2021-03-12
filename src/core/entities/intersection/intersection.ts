@@ -8,12 +8,12 @@ export class Intersection implements IntersectionData {
 
     readonly column: number;
 
-    readonly owner?: Player;
+    readonly stoneOwner?: Player;
 
     constructor(data: IntersectionData) {
       this.id = data.id;
       this.row = data.row;
       this.column = data.column;
-      this.owner = data.owner;
+      this.stoneOwner = data.stoneOwner;
     }
 }

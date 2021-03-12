@@ -5,7 +5,7 @@
 <div class="wrapper">
     <svg width="30" height="30">
         <rect class="cell-rect" width="30" height="30" />
-        <path :class="'cell-path' + ' ' + cellType + ' ' + strokeColor"
+        <path :class="'cell-path' + ' ' + cellType + ' ' + territoryColor"
         d="M0,15H30M15,0V30"/>
     </svg>
 </div>
@@ -53,12 +53,12 @@ export default defineComponent({
   stroke-width: 1;
 
   &.black {
-      stroke-width: 2;
+      stroke-width: 3;
       stroke: black;
   }
 
   &.red {
-      stroke-width: 2;
+      stroke-width: 3;
       stroke: red;
   }
 

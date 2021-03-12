@@ -3,7 +3,7 @@
   @click="itemClicked"
   class="grid-item">
     <el-card
-      v-show="intersectionItem.owner"
+      v-show="intersectionItem.stoneOwner"
       :body-style="backgroundColorStyle" >
     </el-card>
   </div>
@@ -48,8 +48,8 @@ export default defineComponent({
 
     const state: ComponentState = reactive({
       backgroundColorStyle: computed(() => {
-        const { owner } = intersectionItem.value;
-        return getBackgroundColorStyle(owner?.color || null);
+        const { stoneOwner } = intersectionItem.value;
+        return getBackgroundColorStyle(stoneOwner?.color || null);
       }),
     });
 

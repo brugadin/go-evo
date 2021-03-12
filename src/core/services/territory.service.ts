@@ -1,23 +1,26 @@
-/* eslint-disable no-param-reassign, @typescript-eslint/no-non-null-assertion */
+/* eslint-disable no-param-reassign, @typescript-eslint/no-non-null-assertion, no-nested-ternary */
 import { Board } from '@/core/entities/board';
 import { IntersectionData } from '@/core/entities/intersection';
-import { Player } from '@/core/entities/player/player';
 import { Territory, TerritoryData } from '@/core/entities/territory';
 
 export class TerritoryService {
     getTerritories = (board: Board): IntersectionData[] => {
-      const territories: IntersectionData[] = [];
+      const territories: number[] = [];
       board.intersections.forEach((intersection: IntersectionData) => {
-        const resultTerritory = this.generateTerritory(intersection, board);
-        territories.push({
-          id: intersection.id,
-          row: intersection.row,
-          column: intersection.column,
-          owner: intersection.owner,
-          territoryOwner: resultTerritory.owner,
-        });
+        if (territories.indexOf(intersection.id) === -1) {
+          const resultTerritory = this.generateTerritory(intersection, board);
+          resultTerritory.linkedIntersectionsIds
+            .forEach((id: number) => {
+              territories.push(id);
+              const currentIntersection = board.getIntersectionById(id);
+              if (currentIntersection) {
+                currentIntersection.territoryOwner = resultTerritory.owner;
+              }
+            });
+        }
       });
-      return territories;
+
+      return board.intersections;
     }
 
     private generateTerritory(
@@ -25,24 +28,19 @@ export class TerritoryService {
       board: Board,
       territory?: Territory,
     ): TerritoryData {
-      if (intersection.owner) {
-        const { intersections } = board.getIntersectionGroup(intersection);
-        return {
-          intersections,
-          owner: intersection.owner.color,
-        };
+      if (intersection.stoneOwner) {
+        return this.getTerritoryFromOwned(board, intersection);
       }
 
       territory = this.ensureTerritory(territory, intersection);
       const neighbors = board.getAdjacentIntersectionsList(intersection);
-
       neighbors.forEach((neighbor: IntersectionData) => {
-        if (!neighbor.owner) {
+        if (!neighbor.stoneOwner) {
           if (!territory?.isInTerritory(neighbor)) {
             this.generateTerritory(neighbor, board, territory);
           }
         } else {
-          territory!.owner = neighbor.owner.color;
+          territory!.owner = neighbor.stoneOwner.color;
         }
       });
 
@@ -50,7 +48,10 @@ export class TerritoryService {
         territory.owner = 'neutral';
       }
 
-      return territory;
+      return {
+        linkedIntersectionsIds: territory.linkedIntersectionsIds,
+        owner: territory.owner,
+      };
     }
 
     private ensureTerritory = (
@@ -59,14 +60,22 @@ export class TerritoryService {
     ): Territory => {
       if (!territory) {
         territory = new Territory({
-          intersections: [],
+          linkedIntersectionsIds: [],
           owner: 'unknown',
         });
 
         territory.isRoot = true;
       }
 
-      territory.intersections.push(intersection);
+      territory.linkedIntersectionsIds.push(intersection.id);
       return territory;
+    }
+
+    getTerritoryFromOwned = (board: Board, intersection: IntersectionData): TerritoryData => {
+      const { intersections } = board.getIntersectionGroup(intersection);
+      return {
+        linkedIntersectionsIds: intersections.map((item) => item.id),
+        owner: intersection.stoneOwner!.color,
+      } as TerritoryData;
     }
 }

@@ -30,6 +30,14 @@ export class Board implements BoardData {
       );
     }
 
+    getIntersectionById(
+      id: number,
+    ): IntersectionData | undefined {
+      return this.intersections.find(
+        (intersection: IntersectionData) => intersection.id === id,
+      );
+    }
+
     getAdjacentIntersectionsList(
       intersection: IntersectionData,
     ): IntersectionData[] {
@@ -55,7 +63,7 @@ export class Board implements BoardData {
       liberatedIntersectionsIds.forEach((id: number) => {
         const foundIntersection = this.intersections.find((item) => id === item.id);
         if (foundIntersection) {
-          foundIntersection.owner = undefined;
+          foundIntersection.stoneOwner = undefined;
           liberatedIntersections.push(foundIntersection);
         }
       });
@@ -70,8 +78,8 @@ export class Board implements BoardData {
       let capturedIntersections: IntersectionData[] = [];
 
       neighbors.forEach((neighborIntersection: IntersectionData) => {
-        const neighborOwner = neighborIntersection.owner;
-        if (!!neighborOwner && neighborOwner.id !== intersection.owner?.id) {
+        const neighborOwner = neighborIntersection.stoneOwner;
+        if (!!neighborOwner && neighborOwner.id !== intersection.stoneOwner?.id) {
           const groupedItems = this.getIntersectionGroup(neighborIntersection);
           if (groupedItems.liberties === 0) {
             capturedIntersections = capturedIntersections.concat(groupedItems.intersections);
@@ -88,7 +96,7 @@ export class Board implements BoardData {
       const visitedList: IntersectionData[] = [];
       const queue: IntersectionData[] = [intersection];
       let count = 0;
-      const ownerId = intersection.owner?.id;
+      const ownerId = intersection.stoneOwner?.id;
 
       while (queue.length > 0) {
         // eslint-disable-next-line
@@ -100,9 +108,9 @@ export class Board implements BoardData {
         if (hasVisited) { continue; }
 
         const neighbors = this.getAdjacentIntersectionsList(currentIntersection);
-        count += neighbors.filter((neighbor: IntersectionData) => !neighbor.owner).length;
+        count += neighbors.filter((neighbor: IntersectionData) => !neighbor.stoneOwner).length;
         neighbors.forEach((neighbor: IntersectionData) => {
-          if (neighbor.owner?.id === ownerId) { queue.push(neighbor); }
+          if (neighbor.stoneOwner?.id === ownerId) { queue.push(neighbor); }
         });
 
         visitedList.push(currentIntersection);

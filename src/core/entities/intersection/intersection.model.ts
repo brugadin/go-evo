@@ -4,7 +4,7 @@ export interface IntersectionData {
     id: number;
     row: number;
     column: number;
-    owner?: Player;
+    stoneOwner?: Player;
     territoryOwner?: string;
 }
 
