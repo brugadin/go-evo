@@ -1,7 +1,7 @@
 <template>
 <el-container>
       <el-aside class="side-bar" width="250px">
-        <Players :players="players" :currentPlayerName="currentPlayerName" />
+        <Players :players="players" :currentPlayer="currentPlayer" />
       </el-aside>
       <el-container>
         <el-main class="main-content">
@@ -29,7 +29,7 @@ import useGame from './use-game';
 interface ComponentState {
   intersectionItems: IntersectionData[];
   players: PlayerData[];
-  currentPlayerName: string;
+  currentPlayer: PlayerData;
 }
 
 export default defineComponent({
@@ -44,13 +44,13 @@ export default defineComponent({
       claimIntersection,
       getIntersections,
       getPlayers,
-      getCurrentPlayerName,
+      getCurrentPlayer,
     } = useGame();
 
     const state: ComponentState = reactive({
       intersectionItems: computed(() => getIntersections()),
       players: computed(() => getPlayers()),
-      currentPlayerName: computed(() => getCurrentPlayerName()),
+      currentPlayer: computed(() => getCurrentPlayer()),
     });
 
     function intersectionClicked(intersection: IntersectionData): void {

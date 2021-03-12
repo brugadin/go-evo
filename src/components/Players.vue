@@ -1,22 +1,19 @@
 <template>
 <el-card class="container">
-  <template #header>
-      <strong>Current Player</strong>
-  </template>
-  <div class="text">
-    {{ currentPlayerName }}
+  <template #header>Current Player</template>
+  <div
+    :style="'color: ' + currentPlayer?.color "
+    class="text">
+    {{ currentPlayer?.name }}
   </div>
 </el-card>
-
 <el-card class="container">
-  <template #header>
-      <strong>Score</strong>
-  </template>
+  <template #header>Score</template>
   <div
     v-for="player in players" :key="player.name"
     :style="'color: ' + player.color "
     class="text">
-    {{ player.name }}: {{ player.score }}
+    {{ player.name }}: <strong>{{ player.score }}</strong>
   </div>
 </el-card>
 </template>
@@ -32,9 +29,9 @@ export default defineComponent({
       type: Object as PropType<PlayerData[]>,
       default: () => ([]),
     },
-    currentPlayerName: {
-      type: String as PropType<string>,
-      default: () => (''),
+    currentPlayer: {
+      type: Object as PropType<PlayerData>,
+      default: () => ({}),
     },
   },
 });

@@ -14,8 +14,8 @@ function getPlayers(): PlayerData[] {
   return store.getters['game/players'];
 }
 
-function getCurrentPlayerName(): string {
-  return store.getters['game/currentPlayerName'];
+function getCurrentPlayer(): PlayerData {
+  return store.getters['game/currentPlayer'];
 }
 
 function getIntersections(): IntersectionData[] {
@@ -28,6 +28,6 @@ export default function useGame() {
     startGame,
     getIntersections,
     getPlayers,
-    getCurrentPlayerName,
+    getCurrentPlayer,
   };
 }

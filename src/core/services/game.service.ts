@@ -45,7 +45,6 @@ export class GameService {
       }
 
       this.updatePlayersScore(board.intersections, board.players);
-      console.log(board.players);
       return {
         nextPlayer: this.getNextPlayer(board),
         intersections: board.intersections,

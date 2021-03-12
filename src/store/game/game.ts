@@ -59,6 +59,6 @@ export default {
   getters: {
     intersectionItems: (state: GameState) => state.intersections,
     players: (state: GameState) => state.players,
-    currentPlayerName: (state: GameState) => state.currentPlayer?.name,
+    currentPlayer: (state: GameState) => state.currentPlayer,
   },
 };
