@@ -49,6 +49,7 @@ export default defineComponent({
 
 .container {
   margin-bottom: 15px;
+  max-width: 570px;
 }
 
 .current-player-header {

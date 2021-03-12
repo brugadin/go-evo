@@ -11,4 +11,8 @@ $--color-board: #DCB35C;
 $--font-path: '~element-plus/lib/theme-chalk/fonts';
 $--font-size: 14px;
 
+body {
+    margin: 0;
+}
+
 @import "~element-plus/packages/theme-chalk/src/index";

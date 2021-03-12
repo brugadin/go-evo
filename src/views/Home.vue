@@ -1,18 +1,14 @@
 <template>
 <el-container>
-      <el-aside class="side-bar" width="250px">
-        <Players :players="players" :currentPlayer="currentPlayer" />
-      </el-aside>
-      <el-container>
-        <el-main class="main-content">
-          <div class="game-map-container">
-            <MapGrid
-            :intersectionItems="intersectionItems"
-            @intersectionClicked="intersectionClicked"  />
-        </div>
-        </el-main>
-      </el-container>
-    </el-container>
+  <el-container>
+    <el-main class="main-content">
+        <MapGrid
+        :intersectionItems="intersectionItems"
+        @intersectionClicked="intersectionClicked"  />
+    </el-main>
+      <el-footer class=""><Players :players="players" :currentPlayer="currentPlayer" /></el-footer>
+  </el-container>
+</el-container>
 
 </template>
 
@@ -67,11 +63,26 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
-.side-bar, .main-content {
+.main-content {
   padding: 20px;
+  @media screen and (max-width: 640px) {
+    padding: 20px 0;
+    min-width: 640px;
+  }
 }
 
-.game-map-container {
-  max-width: 700px;
+::v-deep(.el-footer) {
+  @media screen and (max-width: 640px) {
+    padding: 20px 0;
+    min-width: 640px;
+  }
 }
+
+@media screen and (max-width: 640px) {
+  .main-content {
+    padding: 20px 0;
+  }
+
+}
+
 </style>
