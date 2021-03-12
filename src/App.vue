@@ -1,6 +1,14 @@
 <template>
   <div class="main-content">
     <div class="main-container">
+      <el-alert
+        class="pre-alpha-alert"
+        v-if="isProd"
+        title="pre-alpha release"
+        type="warning"
+        :closable="false"
+        show-icon>
+      </el-alert>
       <el-container>
           <router-view/>
       </el-container>
@@ -12,12 +20,24 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'App',
+  setup() {
+    const isProd = process.env.NODE_ENV === 'production';
+    return {
+      isProd,
+    };
+  },
 });
 </script>
 <style scoped>
 .main-container {
   min-width: 640px;
 }
+
+.pre-alpha-alert {
+  max-width: 570px;
+  margin: 0 20px;
+}
+
 @media screen and (min-width: 641px) {
   .main-content {
     display: flex;
