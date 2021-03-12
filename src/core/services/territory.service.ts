@@ -1,10 +1,11 @@
 /* eslint-disable no-param-reassign, @typescript-eslint/no-non-null-assertion, no-nested-ternary */
 import { Board } from '@/core/entities/board';
 import { IntersectionData } from '@/core/entities/intersection';
+import { Player } from '@/core/entities/player';
 import { Territory, TerritoryData } from '@/core/entities/territory';
 
 export class TerritoryService {
-    getTerritories = (board: Board): IntersectionData[] => {
+    determineTerritoryOwners = (board: Board): IntersectionData[] => {
       const territories: number[] = [];
       board.intersections.forEach((intersection: IntersectionData) => {
         if (territories.indexOf(intersection.id) === -1) {
@@ -14,7 +15,8 @@ export class TerritoryService {
               territories.push(id);
               const currentIntersection = board.getIntersectionById(id);
               if (currentIntersection) {
-                currentIntersection.territoryOwner = resultTerritory.owner;
+                currentIntersection.territoryOwner = this
+                  .getPlayerFromTerritory(resultTerritory, board.players);
               }
             });
         }
@@ -71,11 +73,22 @@ export class TerritoryService {
       return territory;
     }
 
-    getTerritoryFromOwned = (board: Board, intersection: IntersectionData): TerritoryData => {
+    private getTerritoryFromOwned = (
+      board: Board,
+      intersection: IntersectionData,
+    ): TerritoryData => {
       const { intersections } = board.getIntersectionGroup(intersection);
       return {
         linkedIntersectionsIds: intersections.map((item) => item.id),
         owner: intersection.stoneOwner!.color,
       } as TerritoryData;
     }
+
+    private getPlayerFromTerritory = (
+      territory: TerritoryData,
+      players: Player[],
+    ): Player | undefined => players.find(
+      (player) => territory.owner
+      && territory.owner === player.color,
+    )
 }

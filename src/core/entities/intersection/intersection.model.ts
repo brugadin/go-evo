@@ -5,7 +5,7 @@ export interface IntersectionData {
     row: number;
     column: number;
     stoneOwner?: Player;
-    territoryOwner?: string;
+    territoryOwner?: Player;
 }
 
 export interface AdjacentIntersections {

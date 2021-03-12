@@ -7,7 +7,7 @@
     >
     <GridCellSurface
     :cellType="getGridCellType(item)"
-    :territoryColor="item.territoryOwner">
+    :territoryColor="item.territoryOwner?.color">
       <IntersectionItem
           :intersectionItem="item"
           @itemClicked="itemClicked" />

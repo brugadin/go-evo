@@ -1,7 +1,7 @@
 import { Board } from '@/core/entities/board/board';
 import { BoardData } from '@/core/entities/board/board.data';
 import { IntersectionData } from '@/core/entities/intersection';
-import { PlayerData } from '@/core/entities/player';
+import { Player, PlayerData } from '@/core/entities/player';
 import { TerritoryService } from './territory.service';
 
 export interface PlayResults {
@@ -38,10 +38,13 @@ export class GameService {
       }
 
       board.liberateIntersectionsById(capturedIntersectionsIds);
-      const nextPlayer = this.getNextPlayer(board);
+      if (this.canDetermineTerritory(board)) {
+        this.territoryService.determineTerritoryOwners(board);
+      }
+
       return {
-        nextPlayer,
-        intersections: this.territoryService.getTerritories(board),
+        nextPlayer: this.getNextPlayer(board),
+        intersections: board.intersections,
       };
     }
 
@@ -66,4 +69,12 @@ export class GameService {
         .findIndex((player: PlayerData) => (board.currentPlayer.name === player.name));
       return board.players[playerIndex + 1] || board.players[0];
     }
+
+    private canDetermineTerritory = (
+      board: Board,
+    ): boolean => board.players.every((
+      player: Player,
+    ) => board.intersections.some((
+      intersection: IntersectionData,
+    ) => intersection.stoneOwner?.id === player.id));
 }
