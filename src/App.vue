@@ -22,7 +22,7 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'App',
   setup() {
-    const isProd = process.env.NODE_ENV !== 'production';
+    const isProd = process.env.NODE_ENV === 'production';
     return {
       isProd,
     };
