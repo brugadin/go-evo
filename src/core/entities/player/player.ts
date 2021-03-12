@@ -5,9 +5,9 @@ export class Player implements PlayerData {
 
     readonly name: string;
 
-    readonly score: number;
-
     readonly color: PlayerColor;
+
+    score: number;
 
     constructor(data: PlayerData) {
       this.id = data.id;

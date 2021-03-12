@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { Board } from '@/core/entities/board/board';
 import { BoardData } from '@/core/entities/board/board.data';
 import { IntersectionData } from '@/core/entities/intersection';
@@ -7,6 +8,7 @@ import { TerritoryService } from './territory.service';
 export interface PlayResults {
   nextPlayer: PlayerData;
   intersections: IntersectionData[];
+  players: Player[];
 }
 
 export class GameService {
@@ -42,9 +44,12 @@ export class GameService {
         this.territoryService.determineTerritoryOwners(board);
       }
 
+      this.updatePlayersScore(board.intersections, board.players);
+      console.log(board.players);
       return {
         nextPlayer: this.getNextPlayer(board),
         intersections: board.intersections,
+        players: board.players,
       };
     }
 
@@ -68,6 +73,14 @@ export class GameService {
       const playerIndex = board.players
         .findIndex((player: PlayerData) => (board.currentPlayer.name === player.name));
       return board.players[playerIndex + 1] || board.players[0];
+    }
+
+    private updatePlayersScore = (intersections: IntersectionData[], players: Player[]) => {
+      players.forEach((player: Player) => {
+        player.score = intersections.filter(
+          (intersection) => intersection.territoryOwner?.id === player.id,
+        ).length;
+      });
     }
 
     private canDetermineTerritory = (

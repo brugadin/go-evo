@@ -14,16 +14,17 @@ export default {
   },
   mutations: {
     [fromMutationTypes.STAR_GAME](state: GameState, payload: StartGamePayload): void {
+      state.currentPlayer = payload.currentPlayer;
       state.intersections = payload.intersections;
       state.players = payload.players;
-      state.currentPlayer = payload.currentPlayer;
     },
     [fromMutationTypes.CLAIM_INTERSECTION](
       state: GameState,
       payload: ClaimIntersectionPayload,
     ): void {
-      state.intersections = payload.intersections;
       state.currentPlayer = payload.nextPlayer;
+      state.intersections = payload.intersections;
+      state.players = payload.players;
     },
   },
   actions: {
@@ -50,6 +51,7 @@ export default {
         commit(fromMutationTypes.CLAIM_INTERSECTION, {
           intersections: playResult.intersections,
           nextPlayer: playResult.nextPlayer,
+          players: playResult.players,
         });
       }
     },

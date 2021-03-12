@@ -26,4 +26,5 @@ export interface StartGamePayload {
 export interface ClaimIntersectionPayload {
   nextPlayer: PlayerData;
   intersections: IntersectionData[];
+  players: PlayerData[];
 }

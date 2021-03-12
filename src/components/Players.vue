@@ -1,11 +1,22 @@
 <template>
-  <el-card>
-  <div v-for="player in players" :key="player.name"
-  :style="'color: ' + player.color "
-  class="text">
-    {{ player.name }}
-    <i v-if="player.name === currentPlayerName"
-    class="el-icon-user"></i>
+<el-card class="container">
+  <template #header>
+      <strong>Current Player</strong>
+  </template>
+  <div class="text">
+    {{ currentPlayerName }}
+  </div>
+</el-card>
+
+<el-card class="container">
+  <template #header>
+      <strong>Score</strong>
+  </template>
+  <div
+    v-for="player in players" :key="player.name"
+    :style="'color: ' + player.color "
+    class="text">
+    {{ player.name }}: {{ player.score }}
   </div>
 </el-card>
 </template>
@@ -34,7 +45,11 @@ export default defineComponent({
 
 .text {
   font-size: $--font-size;
-  margin-bottom: 18px;
+  margin-bottom: 5px;
+}
+
+.container {
+  margin-bottom: 15px;
 }
 
 </style>
