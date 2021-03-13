@@ -103,6 +103,7 @@ export default defineComponent({
 .grid {
     display: grid;
     align-items: start;
+    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 25%);
 }
 .item {
   height: 30px;
