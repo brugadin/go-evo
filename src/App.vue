@@ -2,7 +2,7 @@
 <el-alert
   class="pre-alpha-alert"
   v-if="isProd"
-  title="pre-alpha release"
+  title="Pre-alpha release"
   type="warning"
   :closable="false"
   show-icon
