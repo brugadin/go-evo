@@ -12,7 +12,7 @@ export interface PlayResults {
 }
 
 export class GameService {
-    private readonly boardSize = 9;
+    private readonly boardSize = 19;
 
     private readonly numberOfPlayers = 2;
 
