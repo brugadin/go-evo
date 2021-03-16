@@ -1,4 +1,4 @@
-import { Player } from '../player';
+import { PlayerData } from '../player';
 import { IntersectionData } from './intersection.model';
 
 export class Intersection implements IntersectionData {
@@ -8,7 +8,7 @@ export class Intersection implements IntersectionData {
 
     readonly column: number;
 
-    readonly stoneOwner?: Player;
+    readonly stoneOwner?: PlayerData;
 
     constructor(data: IntersectionData) {
       this.id = data.id;

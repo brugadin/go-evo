@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign, @typescript-eslint/no-non-null-assertion, no-nested-ternary */
 import { Board } from '@/core/entities/board';
 import { IntersectionData } from '@/core/entities/intersection';
-import { Player } from '@/core/entities/player';
+import { PlayerData } from '@/core/entities/player';
 import { Territory, TerritoryData } from '@/core/entities/territory';
 
 export class TerritoryService {
@@ -86,8 +86,8 @@ export class TerritoryService {
 
     private getPlayerFromTerritory = (
       territory: TerritoryData,
-      players: Player[],
-    ): Player | undefined => players.find(
+      players: PlayerData[],
+    ): PlayerData | undefined => players.find(
       (player) => territory.owner
       && territory.owner === player.color,
     )

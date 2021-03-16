@@ -1,11 +1,11 @@
-import { Player } from '@/core/entities/player';
+import { PlayerData } from '@/core/entities/player';
 
 export interface IntersectionData {
     id: number;
     row: number;
     column: number;
-    stoneOwner?: Player;
-    territoryOwner?: Player;
+    stoneOwner?: PlayerData;
+    territoryOwner?: PlayerData;
 }
 
 export interface AdjacentIntersections {

@@ -2,17 +2,17 @@
 import { Board } from '@/core/entities/board/board';
 import { BoardData } from '@/core/entities/board/board.data';
 import { IntersectionData } from '@/core/entities/intersection';
-import { Player, PlayerData } from '@/core/entities/player';
+import { PlayerData } from '@/core/entities/player';
 import { TerritoryService } from './territory.service';
 
 export interface PlayResults {
   nextPlayer: PlayerData;
   intersections: IntersectionData[];
-  players: Player[];
+  players: PlayerData[];
 }
 
 export class GameService {
-    private readonly boardSize = 19;
+    private readonly boardSize = 9;
 
     private readonly numberOfPlayers = 2;
 
@@ -74,8 +74,8 @@ export class GameService {
       return board.players[playerIndex + 1] || board.players[0];
     }
 
-    private updatePlayersScore = (intersections: IntersectionData[], players: Player[]) => {
-      players.forEach((player: Player) => {
+    private updatePlayersScore = (intersections: IntersectionData[], players: PlayerData[]) => {
+      players.forEach((player: PlayerData) => {
         player.score = intersections.filter(
           (intersection) => intersection.territoryOwner?.id === player.id,
         ).length;
@@ -85,7 +85,7 @@ export class GameService {
     private canDetermineTerritory = (
       board: Board,
     ): boolean => board.players.every((
-      player: Player,
+      player: PlayerData,
     ) => board.intersections.some((
       intersection: IntersectionData,
     ) => intersection.stoneOwner?.id === player.id));
