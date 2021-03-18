@@ -44,7 +44,7 @@ describe('Board', () => {
   it('should return undefined when an intersection by its coordinates', () => {
     const returnedIntersection = boardInstance.getIntersectionByCoordinates(-10, -10);
 
-    expect(returnedIntersection).toBe(returnedIntersection);
+    expect(returnedIntersection).toBeUndefined();
   });
 
   it('should return adjacent intersections', () => {
