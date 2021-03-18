@@ -1,2 +1,2 @@
 export * from './board';
-export * from './board.data';
+export * from './board.model';

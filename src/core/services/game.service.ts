@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { Board } from '@/core/entities/board/board';
-import { BoardData } from '@/core/entities/board/board.data';
+import { BoardData } from '@/core/entities/board/board.model';
 import { IntersectionData } from '@/core/entities/intersection';
 import { PlayerData } from '@/core/entities/player';
 import { TerritoryService } from './territory.service';
@@ -12,7 +12,7 @@ export interface PlayResults {
 }
 
 export class GameService {
-    private readonly boardSize = 19;
+    private readonly boardSize = 5;
 
     private readonly numberOfPlayers = 2;
 

@@ -42,6 +42,8 @@ export default {
 
       if (!currentPlayer) { return; }
 
+      console.log({ intersections, players, currentPlayer });
+
       const playResult = this.$services.game.play(
         intersectionId,
         { intersections, players, currentPlayer },

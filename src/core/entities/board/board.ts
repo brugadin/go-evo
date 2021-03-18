@@ -5,7 +5,7 @@ import {
 } from '@/core/entities/intersection';
 import { PlayerData } from '../player';
 
-import { BoardData } from './board.data';
+import { BoardData } from './board.model';
 
 export class Board implements BoardData {
     readonly intersections: IntersectionData[];
@@ -20,7 +20,7 @@ export class Board implements BoardData {
       this.currentPlayer = data.currentPlayer;
     }
 
-    private getIntersectionByCoordinates(
+    getIntersectionByCoordinates(
       row: number,
       column: number,
     ): IntersectionData | undefined {
