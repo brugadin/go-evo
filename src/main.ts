@@ -8,14 +8,10 @@ import './registerServiceWorker';
 import router from './router';
 import store from './store';
 
-const AI_INSTRUMENT_KEY = process.env.VUE_APP_AI_INSTRUMENT_KEY;
 const app = createApp(App);
 
-if (process.env.NODE_ENV === 'production'
-  && !!AI_INSTRUMENT_KEY) {
-  app.use(AppInsights, {
-    id: AI_INSTRUMENT_KEY,
-  });
+if (process.env.NODE_ENV === 'production') {
+  app.use(AppInsights);
 }
 
 prepareServices(store);

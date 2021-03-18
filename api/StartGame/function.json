@@ -16,5 +16,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/StartGame/index.js"
+  "scriptFile": "../dist/startGame/index.js"
 }
