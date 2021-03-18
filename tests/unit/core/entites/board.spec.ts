@@ -23,7 +23,7 @@ describe('Board', () => {
 
     const returnedIntersection = boardInstance.getIntersectionById(id);
 
-    expect(returnedIntersection).toBe(returnedIntersection);
+    expect(returnedIntersection).not.toBeUndefined();
   });
 
   it('should return undefined when intersection is not found', () => {
@@ -38,7 +38,7 @@ describe('Board', () => {
 
     const returnedIntersection = boardInstance.getIntersectionByCoordinates(row, column);
 
-    expect(returnedIntersection).toBe(returnedIntersection);
+    expect(returnedIntersection).not.toBeUndefined();
   });
 
   it('should return undefined when an intersection by its coordinates', () => {
