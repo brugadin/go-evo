@@ -45,7 +45,3 @@ npm run test:e2e
 ```
 npm run lint
 ```
-
-## Contact me @
-
-To get in touch with me, mail me at `gabriel.morel@gmail.com`, I will get back to you ASAP.
