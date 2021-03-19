@@ -1,23 +1,39 @@
-# go-evo
+# Go Evo
 
-## Project setup
+I've chosen to create a game based on Go (game), to explore clean architectures in Vue.js. The focus of this repo is to create a fun game loop with a robust software architecture to allow changes as I iterate over what makes the game fun. 
+
+Currently a game of Go can be played on a browser by two human players, in the next iterations new rules and features will be added to make this game unique.
+
+### How To Play
+See [Wikipedia - Basic Rules](https://en.wikipedia.org/wiki/Go_(game)#Basic_rules).
+
+## High level tech components
+- Using principles of SOLID, DRY and Clean Code
+- Vuex for state management
+- element-plus as base style
+- Vue 3 composition API
+- Linting rules (ESLINT AirBnB)
+- Unit testing (Jest)
+- Azure Static Web Apps for hosting
+
+## Run the app locally
+### Install the required packages
 ```
-npm install
+npm install 
 ```
 
-### Compiles and hot-reloads for development
+### Start the app locally
 ```
 npm run serve
+```
+### Run unit tests 
+```
+npm run test:unit
 ```
 
 ### Compiles and minifies for production
 ```
 npm run build
-```
-
-### Run your unit tests
-```
-npm run test:unit
 ```
 
 ### Run your end-to-end tests
@@ -30,5 +46,6 @@ npm run test:e2e
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Contact me @
+
+To get in touch with me, mail me at `gabriel.morel@gmail.com`, I will get back to you ASAP.
