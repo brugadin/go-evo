@@ -1,10 +1,9 @@
 import {
-  IntersectionGroup,
   AdjacentIntersections,
   IntersectionData,
+  IntersectionGroupData,
 } from '@/core/entities/intersection';
 import { PlayerData } from '../player';
-
 import { BoardData } from './board.model';
 
 export class Board implements BoardData {
@@ -21,8 +20,8 @@ export class Board implements BoardData {
     }
 
     getIntersectionByCoordinates(
-      row: number,
       column: number,
+      row: number,
     ): IntersectionData | undefined {
       return this.intersections.find(
         (intersection: IntersectionData) => intersection.column === column
@@ -51,10 +50,10 @@ export class Board implements BoardData {
       intersection: IntersectionData,
     ): AdjacentIntersections {
       return {
-        top: this.getIntersectionByCoordinates(intersection.row - 1, intersection.column),
-        left: this.getIntersectionByCoordinates(intersection.row, intersection.column - 1),
-        bottom: this.getIntersectionByCoordinates(intersection.row + 1, intersection.column),
-        right: this.getIntersectionByCoordinates(intersection.row, intersection.column + 1),
+        top: this.getIntersectionByCoordinates(intersection.column, intersection.row - 1),
+        left: this.getIntersectionByCoordinates(intersection.column - 1, intersection.row),
+        bottom: this.getIntersectionByCoordinates(intersection.column, intersection.row + 1),
+        right: this.getIntersectionByCoordinates(intersection.column + 1, intersection.row),
       } as AdjacentIntersections;
     }
 
@@ -92,7 +91,7 @@ export class Board implements BoardData {
 
     getIntersectionGroup(
       intersection: IntersectionData,
-    ): IntersectionGroup {
+    ): IntersectionGroupData {
       const visitedList: IntersectionData[] = [];
       const queue: IntersectionData[] = [intersection];
       let count = 0;
@@ -119,6 +118,6 @@ export class Board implements BoardData {
       return {
         liberties: count,
         intersections: visitedList,
-      } as IntersectionGroup;
+      } as IntersectionGroupData;
     }
 }
