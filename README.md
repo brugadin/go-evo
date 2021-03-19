@@ -1,8 +1,8 @@
 # Go Evo
 
-I've chosen to create a game based on Go (game), to explore clean architectures in Vue.js. The focus of this repo is to create a fun game loop with a robust software architecture to allow changes as I iterate over what makes the game fun. 
+I've chosen to create a game based on Go (game) to explore clean architectures in Vue.js. This repo's focus is to create a fun game loop with a robust software architecture to allow changes as I iterate over what makes the game fun.
 
-Currently a game of Go can be played on a browser by two human players, in the next iterations new rules and features will be added to make this game unique.
+A game of Go can be played on a browser by two human players; in the successive iterations, I will add new rules and features to make this game unique.
 
 ### How To Play
 See [Wikipedia - Basic Rules](https://en.wikipedia.org/wiki/Go_(game)#Basic_rules).
