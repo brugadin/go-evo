@@ -1,15 +1,7 @@
 <template>
 <el-card class="container">
   <template #header>
-    <div class="current-player-header">
-      <span>Current Player</span>
-      <el-button
-      type="warning"
-      plain
-      @click="passTurnClicked"
-      class="button"
-      >Pass Turn</el-button>
-      </div>
+    <div class="current-player-header">Current Player</div>
   </template>
   <div
     :style="'color: ' + currentPlayer?.color "
