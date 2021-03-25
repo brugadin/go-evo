@@ -16,6 +16,8 @@ See [Wikipedia - Basic Rules](https://en.wikipedia.org/wiki/Go_(game)#Basic_rule
 - Unit testing (Jest)
 - Azure Static Web Apps for hosting
 
+## Run the live app
+You can run the app from any modern browser from [Go Evo](http://go-evo.brugadin.com).
 ## Run the app locally
 ### Install the required packages
 ```
