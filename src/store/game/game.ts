@@ -17,6 +17,7 @@ export default {
       state.currentPlayer = payload.currentPlayer;
       state.intersections = payload.intersections;
       state.players = payload.players;
+      state.moveHistory = [];
     },
     [fromMutationTypes.CLAIM_INTERSECTION](
       state: GameState,
@@ -25,6 +26,7 @@ export default {
       state.currentPlayer = payload.nextPlayer;
       state.intersections = payload.intersections;
       state.players = payload.players;
+      state.moveHistory = payload.moveHistory;
     },
   },
   actions: {
@@ -38,13 +40,15 @@ export default {
         currentPlayer,
         intersections,
         players,
+        moveHistory,
       } = JSON.parse(JSON.stringify(state)) as GameState;
 
       if (!currentPlayer) { return; }
 
+      const boardData = { intersections, players, currentPlayer };
+      const moveData = { intersectionId, playerId: currentPlayer.id };
       const playResult = this.$services.game.play(
-        intersectionId,
-        { intersections, players, currentPlayer },
+        moveData, boardData, moveHistory,
       );
 
       if (playResult) {
@@ -52,6 +56,7 @@ export default {
           intersections: playResult.intersections,
           nextPlayer: playResult.nextPlayer,
           players: playResult.players,
+          moveHistory: moveHistory.concat({ playerId: currentPlayer.id, intersectionId }),
         });
       }
     },

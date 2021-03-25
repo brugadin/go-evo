@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import { MoveData } from '@/core/entities/move';
 import { Board } from '@/core/entities/board/board';
 import { BoardData } from '@/core/entities/board/board.model';
 import { IntersectionData } from '@/core/entities/intersection';
@@ -25,12 +26,20 @@ export class GameService {
       return { intersections, players, currentPlayer };
     }
 
-    play = (intersectionId: number, boardData: BoardData): PlayResults | undefined => {
+    play = (
+      moveData: MoveData,
+      boardData: BoardData,
+      movesHistory: MoveData[],
+    ): PlayResults | undefined => {
       const board = new Board(boardData);
       const intersection = board.intersections
-        .find((item) => item?.id === intersectionId && !item.stoneOwner) as IntersectionData;
+        .find((item) => item?.id === moveData.intersectionId
+        && !item.stoneOwner) as IntersectionData;
 
-      if (!board.currentPlayer || !intersection) { return undefined; }
+      if (!board.currentPlayer
+        || board.currentPlayer.id !== moveData.playerId
+        || !intersection
+        || this.isKo(moveData, movesHistory)) { return undefined; }
 
       intersection.stoneOwner = board.currentPlayer;
       const capturedIntersectionsIds = board.getCapturedIntersectionsIds(intersection);
@@ -89,4 +98,16 @@ export class GameService {
     ) => board.intersections.some((
       intersection: IntersectionData,
     ) => intersection.stoneOwner?.id === player.id));
+
+    private isKo = (
+      moveData: MoveData,
+      moveHistory: MoveData[],
+    ): boolean => {
+      const playerMoves = moveHistory.filter(
+        (move) => move.playerId === moveData.playerId,
+      );
+      const lastMove = playerMoves.pop();
+      const isKoMove = lastMove?.intersectionId === moveData.intersectionId;
+      return isKoMove;
+    }
 }
