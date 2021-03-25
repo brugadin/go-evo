@@ -6,7 +6,11 @@
         :intersectionItems="intersectionItems"
         @intersectionClicked="intersectionClicked"  />
     </el-main>
-      <el-footer class=""><Players :players="players" :currentPlayer="currentPlayer" /></el-footer>
+      <el-footer class="">
+        <Players
+        :players="players"
+        :currentPlayer="currentPlayer"
+        @passTurnClicked="passTurnClicked" /></el-footer>
   </el-container>
 </el-container>
 
@@ -36,11 +40,12 @@ export default defineComponent({
   },
   setup() {
     const {
-      startGame,
       claimIntersection,
+      getCurrentPlayer,
       getIntersections,
       getPlayers,
-      getCurrentPlayer,
+      passPlayerTurn,
+      startGame,
     } = useGame();
 
     const state: ComponentState = reactive({
@@ -53,11 +58,16 @@ export default defineComponent({
       claimIntersection(intersection.id);
     }
 
+    function passTurnClicked(): void {
+      passPlayerTurn();
+    }
+
     onMounted(() => startGame());
 
     return {
       ...toRefs(state),
       intersectionClicked,
+      passTurnClicked,
     };
   },
 });

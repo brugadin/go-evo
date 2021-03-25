@@ -1,6 +1,10 @@
 import { ActionContext } from 'vuex';
 import {
-  AppStore, ClaimIntersectionPayload, GameState, StartGamePayload,
+  AppStore,
+  ClaimIntersectionPayload,
+  GameState,
+  PassPlayerTurnPayload,
+  StartGamePayload,
 } from './models';
 import * as fromMutationTypes from './mutation-types';
 
@@ -9,8 +13,6 @@ export default {
   namespaced: true,
   state: {
     players: [],
-    currentPlayer: null,
-    board: null,
   },
   mutations: {
     [fromMutationTypes.STAR_GAME](state: GameState, payload: StartGamePayload): void {
@@ -28,6 +30,10 @@ export default {
       state.players = payload.players;
       state.moveHistory = payload.moveHistory;
     },
+    [fromMutationTypes.PASS_PLAYER_TURN](state: GameState, payload: PassPlayerTurnPayload): void {
+      state.currentPlayer = payload.nextPlayer;
+      state.moveHistory = payload.moveHistory;
+    },
   },
   actions: {
     startGame(this: AppStore, { commit }: ActionContext<GameState, {}>): void {
@@ -43,8 +49,6 @@ export default {
         moveHistory,
       } = JSON.parse(JSON.stringify(state)) as GameState;
 
-      if (!currentPlayer) { return; }
-
       const boardData = { intersections, players, currentPlayer };
       const moveData = { intersectionId, playerId: currentPlayer.id };
       const playResult = this.$services.game.play(
@@ -59,6 +63,18 @@ export default {
           moveHistory: moveHistory.concat({ playerId: currentPlayer.id, intersectionId }),
         });
       }
+    },
+    passPlayerTurn(this: AppStore, { commit, state }: ActionContext<GameState, {}>): void {
+      const {
+        currentPlayer,
+        players,
+        moveHistory,
+      } = JSON.parse(JSON.stringify(state)) as GameState;
+
+      commit(
+        fromMutationTypes.PASS_PLAYER_TURN,
+        this.$services.game.passPlayerTurn(currentPlayer, players, moveHistory),
+      );
     },
   },
   getters: {

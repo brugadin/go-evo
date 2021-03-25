@@ -7,7 +7,7 @@ import { MoveData } from '@/core/entities/move';
 export interface RootState {}
 
 export interface GameState {
-  currentPlayer?: PlayerData;
+  currentPlayer: PlayerData;
   intersections: IntersectionData[];
   moveHistory: MoveData[];
   players: PlayerData[];
@@ -29,5 +29,10 @@ export interface ClaimIntersectionPayload {
   nextPlayer: PlayerData;
   intersections: IntersectionData[];
   players: PlayerData[];
+  moveHistory: MoveData[];
+}
+
+export interface PassPlayerTurnPayload {
+  nextPlayer: PlayerData;
   moveHistory: MoveData[];
 }

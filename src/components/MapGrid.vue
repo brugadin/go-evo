@@ -41,6 +41,7 @@ export default defineComponent({
     GridCellSurface,
   },
   name: 'MapGrid',
+  emits: ['intersection-clicked'],
   props: {
     intersectionItems: {
       type: Object as PropType<IntersectionData[]>,

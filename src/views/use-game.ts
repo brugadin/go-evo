@@ -10,6 +10,10 @@ function claimIntersection(intersectionId: number): void {
   store.dispatch('game/claimIntersection', intersectionId);
 }
 
+function passPlayerTurn(): void {
+  store.dispatch('game/passPlayerTurn');
+}
+
 function getPlayers(): PlayerData[] {
   return store.getters['game/players'];
 }
@@ -25,9 +29,10 @@ function getIntersections(): IntersectionData[] {
 export default function useGame() {
   return {
     claimIntersection,
-    startGame,
+    getCurrentPlayer,
     getIntersections,
     getPlayers,
-    getCurrentPlayer,
+    passPlayerTurn,
+    startGame,
   };
 }

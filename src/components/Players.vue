@@ -1,7 +1,15 @@
 <template>
 <el-card class="container">
   <template #header>
-    <div class="current-player-header">Current Player</div>
+    <div class="current-player-header">
+      <span>Current Player</span>
+      <el-button
+      type="warning"
+      plain
+      @click="passTurnClicked"
+      class="button"
+      >Pass Turn</el-button>
+      </div>
   </template>
   <div
     :style="'color: ' + currentPlayer?.color "
@@ -22,10 +30,16 @@
 
 <script lang='ts'>
 import { PlayerData } from '@/core/entities/player';
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, SetupContext } from 'vue';
+
+interface Props {
+  players: PlayerData[];
+  currentPlayer: PlayerData;
+}
 
 export default defineComponent({
   name: 'Players',
+  emits: ['pass-turn-clicked'],
   props: {
     players: {
       type: Object as PropType<PlayerData[]>,
@@ -35,6 +49,14 @@ export default defineComponent({
       type: Object as PropType<PlayerData>,
       default: () => ({}),
     },
+  },
+  setup(props: Props, { emit }: SetupContext) {
+    function passTurnClicked(): void {
+      emit('pass-turn-clicked');
+    }
+    return {
+      passTurnClicked,
+    };
   },
 });
 </script>

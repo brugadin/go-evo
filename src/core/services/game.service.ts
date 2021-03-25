@@ -36,10 +36,7 @@ export class GameService {
         .find((item) => item?.id === moveData.intersectionId
         && !item.stoneOwner) as IntersectionData;
 
-      if (!board.currentPlayer
-        || board.currentPlayer.id !== moveData.playerId
-        || !intersection
-        || this.isKo(moveData, movesHistory)) { return undefined; }
+      if (this.isKo(moveData, movesHistory)) { return undefined; }
 
       intersection.stoneOwner = board.currentPlayer;
       const capturedIntersectionsIds = board.getCapturedIntersectionsIds(intersection);
@@ -55,11 +52,20 @@ export class GameService {
 
       this.updatePlayersScore(board.intersections, board.players);
       return {
-        nextPlayer: this.getNextPlayer(board),
+        nextPlayer: this.getNextPlayer(board.currentPlayer, board.players),
         intersections: board.intersections,
         players: board.players,
       };
     }
+
+    passPlayerTurn = (
+      currentPlayer: PlayerData,
+      players: PlayerData[],
+      moveHistory: MoveData[],
+    ) => ({
+      nextPlayer: this.getNextPlayer(currentPlayer, players),
+      moveHistory: moveHistory.concat({ playerId: currentPlayer.id, intersectionId: -1 }),
+    })
 
     private generatePlayers = (): PlayerData[] => Array.from(
       Array(this.numberOfPlayers),
@@ -77,10 +83,13 @@ export class GameService {
     )
       .flat(1);
 
-    private getNextPlayer = (board: Board): PlayerData => {
-      const playerIndex = board.players
-        .findIndex((player: PlayerData) => (board.currentPlayer.name === player.name));
-      return board.players[playerIndex + 1] || board.players[0];
+    private getNextPlayer = (
+      currentPlayer: PlayerData,
+      players: PlayerData[],
+    ): PlayerData => {
+      const playerIndex = players
+        .findIndex((player: PlayerData) => (currentPlayer.name === player.name));
+      return players[playerIndex + 1] || players[0];
     }
 
     private updatePlayersScore = (intersections: IntersectionData[], players: PlayerData[]) => {

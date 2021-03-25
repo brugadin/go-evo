@@ -25,6 +25,7 @@ interface ComponentState {
 
 export default defineComponent({
   name: 'IntersectionItem',
+  emits: ['item-clicked'],
   props: {
     intersectionItem: {
       type: Object as PropType<IntersectionData>,
